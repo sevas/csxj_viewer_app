@@ -1,0 +1,4 @@
+syntax: glob
+static_data/
+*.pyc
+.idea/
