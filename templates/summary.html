@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 
-{% block content %}
-    {% for p in providers %}
+{% block title %} what {% endblock %}
 
-    <h1>{{ p }}</h1>
+{% block content %}
+
+    {% for provider, articles in all_articles.items %}
+        <h1>{{ provider }}</h1>
+        {% for article in articles %}
+               {{ article.title }}
+               <br/>
+
+           {% endfor  %}
 
     {% endfor %}
+
 {% endblock %}
+

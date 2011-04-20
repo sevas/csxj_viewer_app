@@ -2,9 +2,11 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/screen.css"  media="screen, projection"/>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/plugins/buttons/screen.css" media="screen, projection"/>
-    <link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print"/>
+
+
+    <link type="text/css" rel="stylesheet" href="/static/stylesheets/blueprint/screen.css"  media="screen, projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/stylesheets/blueprint/plugins/buttons/screen.css" media="screen, projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/stylesheets/blueprint/print.css"  media="print"/>
 
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -13,14 +15,50 @@
     <!--Site logo & stuff-->
     <div class="span-24 last">
         <div id="banner">
-            <strong><a href="/"> Links. Vast amounts of them.</a></strong>
+            <strong><a href="/"> <span style="font-variant: small-caps;">Links. Vast amounts of them.</span></a></strong>
         </div>
         <hr/>
     </div>
 
     <!-- dynamic content -->
-    <div class="span-15 colborder">
+    <div class="span-18 colborder">
         {% block content %}{% endblock %}
+    </div>
+
+    <!-- sidebar  -->
+    <div class="span-5 last">
+        <!-- About -->
+        <h3>Status</h3>
+        <div class="box">
+            <p>Last update was made {{ update_date  }} on {{ update_time }}
+               <br/>
+                {{ num_articles }} articles from {{ num_providers }} providers fetched
+                <br/>
+                {% if num_errors %}
+                    {{ num_errors }} errors.
+                {% else %}
+                    No error occurred.
+                {% endif%}
+            </p>
+        </div>
+        {% block optional_box %}{% endblock %}
+    </div>
+
+
+    <!--footer-->
+    <div class="span-24 last">
+        <div style="text-align: center;">
+            <br/>
+            <hr/>
+            <p>
+                CSS is a technology from hell, hence I let
+                <a href="http://www.blueprintcss.org/">other people</a> do the work for me.
+                <br/>
+                Powered by the <a href="http://www.djangoproject.com/">Web Framework</a> for perfectionists with deadlines.
+                <br/>
+                Kindly hosted on tartelette.
+            </p>
+        </div>
     </div>
 
 
