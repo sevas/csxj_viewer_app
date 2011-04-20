@@ -27,7 +27,7 @@ body {
     font-size:75%;
     color:#4c4c4c;
     /*background:#fff;*/
-    font-family: "Gill Sans",  Arial, Helvetica, sans-serif;
+    font-family: "Gill Sans", Helvetica, sans-serif;
     background: url(images/Background.png);
 }
 h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#4c4c4c;}
