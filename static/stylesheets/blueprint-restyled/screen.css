@@ -13,7 +13,7 @@
 
 /* reset.css */
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
-body {line-height:1.5;}
+body {line-height:1.5; }
 table {border-collapse:separate;border-spacing:0;}
 caption, th, td {text-align:left;font-weight:normal;}
 table, td, th {vertical-align:middle;}
@@ -25,11 +25,12 @@ a img {border:none;}
 html {font-size:100.01%;}
 body {
     font-size:75%;
-    color:#222;
-    background:#fff;
-    font-family: "Gill Sans", "Helvetica Neue", Arial, Helvetica, sans-serif;
+    color:#4c4c4c;
+    /*background:#fff;*/
+    font-family: "Gill Sans",  Arial, Helvetica, sans-serif;
+    background: url(images/Background.png);
 }
-h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
+h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#4c4c4c;}
 h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
 h2 {font-size:2em;margin-bottom:0.75em;}
 h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}
@@ -41,8 +42,8 @@ p {margin:0 0 1.5em;}
 p img.left {float:left;margin:1.5em 1.5em 1.5em 0;padding:0;}
 p img.right {float:right;margin:1.5em 0 1.5em 1.5em;}
 a:focus, a:hover {color:#000;}
-a {color:#009;text-decoration:underline;}
-blockquote {margin:1.5em;color:#666;font-style:italic;}
+a {color:#4c4c4c; font-weight:bold; text-decoration:none; border-bottom:1px dashed; border-bottom-color:#4c4c4c}
+blockquote {margin:1.5em;color:#4c4c4c;font-style:italic; padding-left:10px; border-left:1px solid; border-left-color:#ccc}
 strong {font-weight:bold;}
 em, dfn {font-style:italic;}
 dfn {font-weight:bold;}
@@ -69,7 +70,7 @@ caption {background:#eee;}
 .small {font-size:.8em;margin-bottom:1.875em;line-height:1.875em;}
 .large {font-size:1.2em;line-height:2.5em;margin-bottom:1.25em;}
 .hide {display:none;}
-.quiet {color:#666;}
+.quiet {color:#767676;}
 .loud {color:#000;}
 .highlight {background:#ff0;}
 .added {background:#060;color:#fff;}
@@ -254,8 +255,13 @@ div.colborder {padding-right:24px;margin-right:25px;border-right:1px solid #eee;
 .push-1, .push-2, .push-3, .push-4, .push-5, .push-6, .push-7, .push-8, .push-9, .push-10, .push-11, .push-12, .push-13, .push-14, .push-15, .push-16, .push-17, .push-18, .push-19, .push-20, .push-21, .push-22, .push-23, .push-24 {float:right;position:relative;}
 .prepend-top {margin-top:1.5em;}
 .append-bottom {margin-bottom:1.5em;}
-.box {padding:1.5em;margin-bottom:1.5em;background:#E5ECF9;}
-hr {background:#ddd;color:#ddd;clear:both;float:none;width:100%;height:.1em;margin:0 0 1.45em;border:none;}
+.box {
+    padding:1.5em;
+    margin-bottom:1.5em;
+    
+    background: url(images/BackgroundDark.png);
+}
+hr {background:#ccc;color:#ccc;clear:both;float:none;width:100%;height:.1em;margin:0 0 1.45em;border:none;}
 hr.space {background:#fff;color:#fff;visibility:hidden;}
 .clearfix:after, .container:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
 .clearfix, .container {display:block;}
@@ -265,31 +271,7 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
 #banner a{
     text-decoration: none;
     font-size: 32pt;
-    color:black;
-
-}
-
-
-.filecontent {
-    border: 1px solid gray;
-    font-family: monospace;
-    height: 470px;
-    margin: 5px;
-    overflow: auto;
-    padding: 15px;
-    white-space: pre-line;
-    width: 95%;
-
-}
-
-.faq-entry {
-    border-bottom: solid #ddd 1px;
-    padding-bottom:64px;
-    padding-top:8px;
-}
-
-.faq-entry-last {
+    color:#4c4c4c;
     border-bottom:none;
-    padding-bottom:64px;
-    padding-top:16px;
+
 }

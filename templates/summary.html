@@ -8,17 +8,19 @@
         <h1>{{ provider }}</h1>
         {% for article in articles %}
         <div class='box'>
-            {{ article.pub_date }}<br/>
+            <span class="quiet">{{ article.pub_date|date:"l d F Y" }}</span>
+            <br/>
             <h3><b>{{ article.title }} </b></h3>
             <a href='{{ article.url }}'>Source</a>
             <br/><br/>
             This story has <b>{{ article.internal_links|length }}</b> internal links.
             and
             <b>{{ article.external_links|length }}</b> external links.
-            <br/><br/>
-            <hr>
-
-            <h4>"<i>{{ article.intro }}</i>"</h4>
+            <br/>
+            
+            And it starts like this:
+            <blockquote>{{ article.intro }}</blockquote>
+            
         </div>
 
         {% endfor  %}
