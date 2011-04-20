@@ -1,17 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %} what {% endblock %}
+{% block title %} Summary {% endblock %}
 
 {% block content %}
 
     {% for provider, articles in all_articles.items %}
         <h1>{{ provider }}</h1>
         {% for article in articles %}
-               {{ article.title }}
-               <br/>
+        <div class='box'>
+            {{ article.pub_date }}<br/>
+            <h3><b>{{ article.title }} </b></h3>
+            <a href='{{ article.url }}'>Source</a>
+            <br/><br/>
+            This story has <b>{{ article.internal_links|length }}</b> internal links.
+            and
+            <b>{{ article.external_links|length }}</b> external links.
+            <br/><br/>
+            <hr>
 
-           {% endfor  %}
+            <h4>"<i>{{ article.intro }}</i>"</h4>
+        </div>
 
+        {% endfor  %}
+    <br/><br/>
     {% endfor %}
 
 {% endblock %}

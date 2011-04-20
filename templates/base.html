@@ -21,19 +21,19 @@
     </div>
 
     <!-- dynamic content -->
-    <div class="span-18 colborder">
+    <div class="span-15 colborder">
         {% block content %}{% endblock %}
     </div>
 
     <!-- sidebar  -->
-    <div class="span-5 last">
+    <div class="span-8 last">
         <!-- About -->
         <h3>Status</h3>
         <div class="box">
-            <p>Last update was made {{ update_date  }} on {{ update_time }}
+            <p>Last update was made on <b>{{ update_date  }}</b> at <b>{{ update_time }}</b>
                <br/>
-                {{ num_articles }} articles from {{ num_providers }} providers fetched
-                <br/>
+                <b>{{ num_articles }}</b> articles from <b>{{ num_providers }}</b> providers were fetched.
+                <br/><br/>
                 {% if num_errors %}
                     {{ num_errors }} errors.
                 {% else %}
