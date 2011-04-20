@@ -5,7 +5,7 @@
 {% block content %}
 
     {% for provider, articles in all_articles.items %}
-        <h1>{{ provider }}</h1>
+        <h1><b>{{ provider }}</b></h1>
         {% for article in articles %}
         <div class='box'>
             <span class="quiet">{{ article.pub_date|date:"l d F Y" }}</span>
@@ -13,9 +13,14 @@
             <h3><b>{{ article.title }} </b></h3>
             <a href='{{ article.url }}'>Source</a>
             <br/><br/>
-            This story has <b>{{ article.internal_links|length }}</b> internal links
-            and
-            <b>{{ article.external_links|length }}</b> external links.
+
+            {% with num_links=article.internal_links|length %}
+            This story has <b>{{ num_links }}</b> internal link{{ num_links|pluralize }}
+            {% endwith %}
+
+            {% with num_links=article.external_links|length %}
+            and <b>{{ num_links }}</b> external link{{ num_links|pluralize }}.
+            {% endwith %}
             <br/>
             
             And it starts like this:
