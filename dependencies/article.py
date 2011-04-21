@@ -3,7 +3,6 @@ __author__ = 'sevas'
 
 from collections import namedtuple
 from datetime import datetime, date, time
-
 try:
     import json
 except ImportError:
@@ -12,12 +11,20 @@ except ImportError:
 
 TaggedURL = namedtuple('TaggedURL', 'URL title tags')
 
+
+def tag_URL((url, title), tags):
+    return TaggedURL(URL=url, title=title, tags=tags)
+
+
+
 def count_words(some_text):
     words = some_text.split(' ')
     return len(words)
 
-def tag_URL((url, title), tags):
-    return TaggedURL(URL=url, title=title, tags=tags)
+
+def make_dict_keys_str(a_dict):
+    items = [(str(k), v) for (k, v) in a_dict.items()]
+    return dict(items)
 
 
 class ArticleData(object):
@@ -107,5 +114,6 @@ class ArticleData(object):
             d['pub_time'] = time(h, m)
         else:
             d['pub_time'] = None
-            
+
+        d = make_dict_keys_str(d)
         return kls(**d)

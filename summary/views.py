@@ -12,7 +12,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from article import ArticleData
-
+from providerstats import ProviderStats
 
 
 def make_time(time_string):
@@ -43,6 +43,29 @@ def make_date_from_string(date_string, time_string):
     return make_date(date_string), make_time(time_string)
 
 
+def get_statistics():
+    path = 'static_data'
+    providers = os.listdir(path)
+
+    overall_stats = {'total_articles':0, 'total_errors':0, 'total_links':0, 'start_date':None, 'end_date':None}
+    for p in providers:
+        stats_filename = os.path.join(path, p, 'stats.json')
+        provider_stats = ProviderStats.load_from_file(stats_filename)
+
+        overall_stats['total_articles'] += provider_stats.n_articles
+        overall_stats['total_errors'] += provider_stats.n_errors
+        overall_stats['total_links'] += provider_stats.n_links
+        overall_stats['start_date'] = provider_stats.start_date
+        overall_stats['end_date'] = provider_stats.end_date
+
+    return overall_stats
+
+
+def get_provider_dump(filename):
+    with open(filename, 'r') as f:
+        json_content = f.read()
+        return json.loads(json_content)
+
 def get_latest_fetched_articles():
     path = 'static_data'
     providers = os.listdir(path)
@@ -59,21 +82,19 @@ def get_latest_fetched_articles():
         fetched_date = make_date_from_string(last_day, last_hour)
 
         filename = os.path.join(path, p, last_day, last_hour, 'articles.json')
-        with open(filename, 'r') as f:
-            json_content = f.read()
-            dump = json.loads(json_content)
 
-            articles = []
-            errors = []
-            for article in dump['articles']:
-                articles.append(ArticleData.from_json(article))
+        dump = get_provider_dump(filename)
 
-            for error in dump['errors']:
-                errors.append(error)
-                
-            last_articles[p] = articles
-            last_errors[p] = errors
-            
+        articles, errors = [], []
+        for article in dump['articles']:
+            articles.append(ArticleData.from_json(article))
+
+        for error in dump['errors']:
+            errors.append(error)
+
+        last_articles[p] = articles
+        last_errors[p] = errors
+
     return fetched_date, last_articles, last_errors
 
 
@@ -95,6 +116,8 @@ def index(request):
     template_values = {'all_articles':articles}
     template_values.update(stats)
 
+    overall_stats = get_statistics()
+    template_values.update(overall_stats)
 
     c = Context(template_values)
 
