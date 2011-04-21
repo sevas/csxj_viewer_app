@@ -1,6 +1,5 @@
 # Create your views here.
-import sys
-sys.path.append('dependencies')
+
 import os, os.path
 import json
 from datetime import datetime, time, date
