@@ -275,3 +275,13 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
     border-bottom:none;
 
 }
+
+
+h1 a {
+    border-bottom:none;
+}
+
+/*
+h1 a:hover {
+    border-bottom:1px dashed;
+}*/
