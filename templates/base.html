@@ -16,77 +16,76 @@
 </head>
 <body>
     <div class="container">
-    <!--Site logo & stuff-->
-    <div class="span-24 last">
-        <div id="banner">
-            <strong><a href="/"> <span style="font-variant: small-caps;">Links. Vast amounts of them.</span></a></strong>
-        </div>
-        <hr/>
-    </div>
-
-    <!-- dynamic content -->
-    <div class="span-15 colborder">
-        {% block content %}{% endblock %}
-    </div>
-
-    <!-- sidebar  -->
-    <div class="span-8 last">
-        <!-- About -->
-        <h3><b>Status</b></h3>
-        <div class="box">
-            <p>Last update was made on <b>{{ update_date  }}</b> at <b>{{ update_time }}</b>
-               <br/>
-                <b>{{ num_articles }}</b> articles from <b>{{ num_providers }}</b> providers were fetched.
-                <br/><br/>
-                {% if num_errors %}
-                    {{ num_errors }} errors.
-                {% else %}
-                    No error occurred.
-                {% endif%}
-            </p>
-        </div>
-
-        <h3><b>Overall statistics</b></h3>
-        <div class='box'>
-            Your database contains articles gathered from <b>{{ start_date|date:"F d, Y" }}</b> to <b>{{ end_date|date:"F d, Y" }}</b>.
-            <br/><br/>
-            During this period, <b>{{ total_articles }}</b> articles from <b>{{ num_providers }}</b> sources were fetched,
-            carefully analysed and safely stored for your convenience.
-            <br/><br/>
-            Combined, these articles point to <b>{{ total_links }}</b> other places on the internet.
-
-           <br/><br/>
-            {% if total_errors %}
-                <b>{{ total_errors }}</b> error{{ total_errors|pluralize }}.
-            {% else %}
-                No error occurred. Hurray.
-            {% endif%}
-
-
-        </div>
-
-
-
-        {% block optional_box %}{% endblock %}
-    </div>
-
-
-    <!--footer-->
-    <div class="span-24 last">
-        <div style="text-align: center;">
-            <br/>
+        <!--Site logo & stuff-->
+        <div class="span-24 last">
+            <div id="banner">
+                <strong><a href="/"> <span style="font-variant: small-caps;">Links. Vast amounts of them.</span></a></strong>
+            </div>
             <hr/>
-            <p>
-                CSS is a technology from hell, hence I let
-                <a href="http://www.blueprintcss.org/">other people</a> do the work for me.
+        </div>
+
+        <!-- dynamic content -->
+        <div class="span-15 colborder">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- sidebar  -->
+        <div class="span-8 last">
+            <!-- About -->
+            <h3><b>Status</b></h3>
+            <div class="box">
+                <p>Last update was made on <b>{{ update_date  }}</b> at <b>{{ update_time }}</b>
+                   <br/>
+                    <b>{{ num_articles }}</b> articles from <b>{{ num_providers }}</b> providers were fetched.
+                    <br/><br/>
+                    {% if num_errors %}
+                        {{ num_errors }} errors.
+                    {% else %}
+                        No error occurred.
+                    {% endif%}
+                </p>
+            </div>
+
+            <h3><b>Overall statistics</b></h3>
+            <div class='box'>
+                Your database contains articles gathered from <b>{{ start_date|date:"F d, Y" }}</b> to <b>{{ end_date|date:"F d, Y" }}</b>.
+                <br/><br/>
+                During this period, <b>{{ total_articles }}</b> articles from <b>{{ num_providers }}</b> sources were fetched,
+                carefully analysed and safely stored for your convenience.
+                <br/><br/>
+                Combined, these articles point to <b>{{ total_links }}</b> other places on the internet.
+
+               <br/><br/>
+                {% if total_errors %}
+                    <b>{{ total_errors }}</b> error{{ total_errors|pluralize }}.
+                {% else %}
+                    No error occurred. This is pretty nice.
+                {% endif%}
+
+
+            </div>
+
+
+
+            {% block optional_box %}{% endblock %}
+        </div>
+
+
+        <!--footer-->
+        <div class="span-24 last">
+            <div style="text-align: center;">
                 <br/>
-                Powered by the <a href="http://www.djangoproject.com/">Web Framework</a> for perfectionists with deadlines.
-                <br/>
-                Kindly hosted on tartelette.
-            </p>
+                <hr/>
+                <p>
+                    CSS is a technology from hell, hence I let
+                    <a href="http://www.blueprintcss.org/">other people</a> do the work for me.
+                    <br/>
+                    Powered by the <a href="http://www.djangoproject.com/">Web Framework</a> for perfectionists with deadlines.
+                    <br/>
+                    Kindly hosted on <span style="text-decoration: line-through;">tarte</span>tartiflette.
+                </p>
+            </div>
         </div>
     </div>
-
-
 </body>
 </html>
