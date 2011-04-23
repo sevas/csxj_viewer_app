@@ -36,10 +36,11 @@
             <div class="box">
                 <p>Last update was made on <b>{{ update_date  }}</b> at <b>{{ update_time }}</b>
                    <br/>
-                    <b>{{ num_articles }}</b> articles from <b>{{ num_providers }}</b> providers were fetched.
+                    <b>{{ num_articles }}</b> article{{ num_articles|pluralize }}
+                    from <b>{{ num_providers }}</b> provider{{ num_providers|pluralize }} were fetched.
                     <br/><br/>
                     {% if num_errors %}
-                        {{ num_errors }} errors.
+                        {{ num_errors }} error{{ num_errors|pluralize }}.
                     {% else %}
                         No error occurred.
                     {% endif%}
@@ -57,7 +58,7 @@
 
                <br/><br/>
                 {% if total_errors %}
-                    <b>{{ total_errors }}</b> error{{ total_errors|pluralize }}.
+                    <b>{{ total_errors }}</b> error{{ total_errors|pluralize }} occurred.
                 {% else %}
                     No error occurred. This is pretty nice.
                 {% endif%}
@@ -78,7 +79,7 @@
                 <hr/>
                 <p>
                     CSS is a technology from hell, hence I let
-                    <a href="http://www.blueprintcss.org/">other people</a> do the work for me.
+                    <a href="http://www.blueprintcss.org/">other people</a> do the work for me. Then I pick the colors.
                     <br/>
                     Powered by the <a href="http://www.djangoproject.com/">Web Framework</a> for perfectionists with deadlines.
                     <br/>
