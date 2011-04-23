@@ -43,12 +43,12 @@ def make_date_from_string(date_string, time_string):
 
 
 def get_statistics():
-    path = 'static_data'
-    providers = os.listdir(path)
+    static_data_path = 'static_data'
+    providers = get_subdirectories(static_data_path)
 
     overall_stats = {'total_articles':0, 'total_errors':0, 'total_links':0, 'start_date':None, 'end_date':None}
     for p in providers:
-        stats_filename = os.path.join(path, p, 'stats.json')
+        stats_filename = os.path.join(static_data_path, p, 'stats.json')
         provider_stats = ProviderStats.load_from_file(stats_filename)
 
         overall_stats['total_articles'] += provider_stats.n_articles
@@ -65,22 +65,35 @@ def get_provider_dump(filename):
         json_content = f.read()
         return json.loads(json_content)
 
+
+def get_subdirectories(parent_dir):
+    """
+    Yields a list of directory names. Filter out anything that is not a directory
+    """
+    return [d for d in os.listdir(parent_dir) if os.path.isdir(os.path.join(parent_dir, d))]
+
 def get_latest_fetched_articles():
-    path = 'static_data'
-    providers = os.listdir(path)
+    static_data_path = 'static_data'
+    providers = get_subdirectories(static_data_path)
 
     last_articles = {}
     last_errors = {}
+    # todo: fix that shit
+    fetched_date = datetime.today().date()
 
     for p in providers:
-        all_days = [d for d in os.listdir(os.path.join(path, p)) if not d.endswith('json')]
+        provider_dir = os.path.join(static_data_path, p)
+        all_days = get_subdirectories(provider_dir)
         last_day = get_latest_day(all_days)
-        all_hours = os.listdir(os.path.join(path, p, last_day))
+
+        last_day_dir = os.path.join(provider_dir, last_day)
+        all_hours = get_subdirectories(last_day_dir)
         last_hour = get_latest_hour(all_hours)
 
         fetched_date = make_date_from_string(last_day, last_hour)
 
-        filename = os.path.join(path, p, last_day, last_hour, 'articles.json')
+
+        filename = os.path.join(last_day_dir, last_hour, 'articles.json')
 
         dump = get_provider_dump(filename)
 
