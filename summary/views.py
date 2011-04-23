@@ -73,7 +73,7 @@ def get_subdirectories(parent_dir):
     return [d for d in os.listdir(parent_dir) if os.path.isdir(os.path.join(parent_dir, d))]
 
 def get_latest_fetched_articles():
-    static_data_path = 'static_data'
+    static_data_path =  os.path.join(os.path.dirname(__file__), '../static_data')
     providers = get_subdirectories(static_data_path)
 
     last_articles = {}
