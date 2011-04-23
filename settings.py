@@ -75,7 +75,8 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     #'stylesheets/blueprint/', 'stylesheets/blueprint/plugins/buttons',
-    'static',
+    (os.path.join(os.path.dirname(__file__), 'static'),)
+
 )
 
 # List of finder classes that know how to find static files in
@@ -106,7 +107,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'befr_news_viewer_app.urls'
 
-TEMPLATE_DIRS = (os.path.join(os.getcwd(), 'templates'),)
+TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
 
 INSTALLED_APPS = (
     'django.contrib.auth',

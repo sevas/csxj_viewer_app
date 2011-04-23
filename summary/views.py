@@ -43,7 +43,7 @@ def make_date_from_string(date_string, time_string):
 
 
 def get_statistics():
-    static_data_path = 'static_data'
+    static_data_path =  os.path.join(os.path.dirname(__file__), '../static_data')
     providers = get_subdirectories(static_data_path)
 
     overall_stats = {'total_articles':0, 'total_errors':0, 'total_links':0, 'start_date':None, 'end_date':None}
@@ -78,6 +78,7 @@ def get_latest_fetched_articles():
 
     last_articles = {}
     last_errors = {}
+    
     # todo: fix that shit
     fetched_date = datetime.today().date()
 
@@ -116,6 +117,7 @@ def collect_stats(all_articles, all_errors):
     num_errors = sum(len(errors) for errors in chain(all_errors.values()))
 
     return {'num_providers':num_providers, 'num_articles':num_articles, 'num_errors':num_errors}
+
 
 def index(request):
     t = loader.get_template('summary.html')
