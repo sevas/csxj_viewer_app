@@ -7,6 +7,13 @@ from django.template import Context, loader
 from jsondb import jsondb
 from article import ArticleData
 from providerstats import ProviderStats
+import version
+
+
+
+def load_footer_data():
+    return {'version':version.VERSION}
+
 
 STATIC_DATA_PATH = os.path.join(os.path.dirname(__file__), '../static_data')
 
@@ -30,7 +37,7 @@ def index(request):
 
     template_values = {'all_articles':articles}
     template_values.update(load_sidebar_data())
-
+    template_values.update(load_footer_data())
     c = Context(template_values)
 
     return HttpResponse(t.render(c))
