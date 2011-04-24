@@ -1,6 +1,6 @@
 import version
 from jsondb import jsondb
-
+import version
 
 
 def load_last_update_data(db_root):
