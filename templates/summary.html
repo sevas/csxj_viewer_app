@@ -4,7 +4,7 @@
 
 {% block content %}
     <br/>
-    <h3>This page is a summary of the articles downloaded last time we check all the sources.</h3>
+    <h3>This page is a summary of the articles downloaded last time we checked all the sources.</h3>
     <br/>    <br/>
     {% for provider, articles in all_articles.items %}
         <h1><b><a href='/{{ provider }}'>{{ provider }}</a></b></h1>

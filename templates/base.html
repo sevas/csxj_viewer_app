@@ -37,7 +37,7 @@
                 <p>Last update was made on <b>{{ update_date  }}</b> at <b>{{ update_time }}</b>
                    <br/>
                     <b>{{ num_articles }}</b> article{{ num_articles|pluralize }}
-                    from <b>{{ num_providers }}</b> provider{{ num_providers|pluralize }} were fetched.
+                    from <b>{{ num_providers }}</b> source{{ num_providers|pluralize }} were fetched.
                     <br/><br/>
                     {% if num_errors %}
                         {{ num_errors }} error{{ num_errors|pluralize }}.
