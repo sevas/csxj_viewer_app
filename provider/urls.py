@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 
-urlpatterns = patterns('provider',
-                       url(r'^$', 'befr_news_viewer_app.provider.views.index'),)
+urlpatterns = patterns('',
+                       url(r'^$', 'provider.views.index'),
+                       url(r'(.*)$', 'provider.views.show_source_summary'))
 
