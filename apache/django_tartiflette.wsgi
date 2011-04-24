@@ -11,9 +11,8 @@ prev_sys_path = list(sys.path)
 site.addsitedir(virtualenv_path)
 # add the app's directory to the PYTHONPATH
 sys.path.append('/home/www/django-sites')
+sys.path.append('/home/www/django-sites/befr_news_viewer_app/')
 sys.path.append('/home/www/django-sites/befr_news_viewer_app/dependencies')
-
-
 
 # reorder sys.path so new directories from the addsitedir show up first
 new_sys_path = [p for p in sys.path if p not in prev_sys_path]
@@ -23,7 +22,6 @@ sys.path[:0] = new_sys_path
 
 # import from down here to pull in possible virtualenv django install
 from django.core.handlers.wsgi import WSGIHandler
-
 os.environ['DJANGO_SETTINGS_MODULE'] = 'befr_news_viewer_app.settings_prod'
 
 application = WSGIHandler()
