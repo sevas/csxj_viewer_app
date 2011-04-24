@@ -107,7 +107,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'befr_news_viewer_app.urls'
 
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),
+                 os.path.join(os.path.dirname(__file__), 'summary', 'templates'),
+                 os.path.join(os.path.dirname(__file__), 'provider', 'templates'),
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
