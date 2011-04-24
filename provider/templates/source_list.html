@@ -5,16 +5,24 @@
 
 {% block content %}
    <br/>
-   <h3>These are all your content providers.</h3>
+   <h3>These are all your content providers. </h3>
    <br/>    <br/>
 
-    {% for source in sources %}
+    {% for source_name, source_stats in sources.items %}
 
         <div class="box" style="text-align:center;">
-            <h1>{{ source.name }}</h1>
+            <h1><strong>{{ source_name }}</strong></a></h1>
 
-            This source currently has <b>{{ source.articles|length }}</b> article{{  source.articles|length|pluralize }}.<br/>
-            <a href="/source/{{ source.name }}"> Go browse them. </a>
+             {% with total_links=source_stats.n_links %}
+                This source already provided <strong>{{ total_links }}</strong> link{{ total_links|pluralize }}
+             {% endwith  %}
+                from
+             {% with total_articles=source_stats.n_articles%}
+                <strong>{{ total_articles }}</strong> article{{  total_articles|pluralize }}.
+             {% endwith %}
+                <br/><br/>
+                <a href="/source/{{ source_name }}"> Go browse them. </a>
+
         </div>
 
     {% endfor %}
