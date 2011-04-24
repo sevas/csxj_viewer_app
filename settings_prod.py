@@ -1,6 +1,6 @@
 # Django settings for befr_news_viewer_app project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
