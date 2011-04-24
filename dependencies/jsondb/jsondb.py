@@ -128,3 +128,25 @@ def get_overall_statistics(db_root):
 
     return overall_stats
 
+
+def make_overall_statistics(source_statistics):
+    overall_stats = {'total_articles':0, 'total_errors':0, 'total_links':0, 'start_date':None, 'end_date':None}
+    for (name, provider_stats) in source_statistics.items():
+        overall_stats['total_articles'] += provider_stats.n_articles
+        overall_stats['total_errors'] += provider_stats.n_errors
+        overall_stats['total_links'] += provider_stats.n_links
+        overall_stats['start_date'] = provider_stats.start_date
+        overall_stats['end_date'] = provider_stats.end_date
+
+    return overall_stats
+
+
+def get_per_source_statistics(db_root):
+    sources = get_subdirectories(db_root)
+
+    source_stats = {}
+    for source_name in sources:
+        stats_filename = os.path.join(db_root, source_name, 'stats.json')
+        source_stats[source_name] = ProviderStats.load_from_file(stats_filename)
+
+    return source_stats
