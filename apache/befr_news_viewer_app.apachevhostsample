@@ -1,0 +1,27 @@
+# Put this in /etc/apache2/sites-available, then symlink it  from  /etc/apache2/sites-enabled
+# Change the relevant values (path to site, path to wsgi script)
+
+# Don't forget to have Listen 8080 in /etc/apache2/ports.conf.
+# Or change the damn port. Don't tweak the app prefix.
+
+
+<VirtualHost *:8080>
+
+    Alias /static /home/www/django-sites/befr_news_viewer_app/static
+
+    <Directory /home/www/django-sites/befr_news_viewer_app/static>
+       Order deny,allow
+       Allow from all
+    </Directory>
+
+
+    WSGIScriptAlias / /home/www/django-sites/befr_news_viewer_app/apache/django.wsgi
+
+
+    <Directory /home/www/django-sites/befr_news_viewer_qpp/apache>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+
+</VirtualHost>
