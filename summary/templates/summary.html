@@ -7,7 +7,7 @@
     <h3>This page is a summary of the articles downloaded last time we checked all the sources.</h3>
     <br/>    <br/>
     {% for provider, articles in all_articles.items %}
-        <h1><b><a href='/{{ provider }}'>{{ provider }}</a></b></h1>
+        <h1><b><a href='/source/{{ provider }}'>{{ provider }}</a></b></h1>
         {% if articles %}
             {% for article in articles %}
             <div class='box'>
@@ -36,7 +36,7 @@
             <div class="box">
                 <div style="text-align: center;">
                     <h2>No new articles were found</h2>
-                    Maybe you should have a look at the <a href="{{ provider }}/archives">archives</a>
+                    Maybe you should have a look at the <a href="/source/{{ provider }}/archives">archives</a>
                 </div>
             </div>
         {% endif %}
