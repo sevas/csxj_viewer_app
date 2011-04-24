@@ -32,7 +32,7 @@
         <!-- sidebar  -->
         <div class="span-8 last">
             <!-- About -->
-            <h3><b>Status</b></h3>
+            <h3><strong>Status</strong></h3>
             <div class="box">
                 <p>Last update was made on <b>{{ update_date  }}</b> at <b>{{ update_time }}</b>
                    <br/>
@@ -47,7 +47,7 @@
                 </p>
             </div>
 
-            <h3><b>Overall statistics</b></h3>
+            <h3><strong>Overall statistics</strong></h3>
             <div class='box'>
                 Your database contains articles gathered from <b>{{ start_date|date:"F d, Y" }}</b> to <b>{{ end_date|date:"F d, Y" }}</b>.
                 <br/><br/>
@@ -55,10 +55,11 @@
                 carefully analysed and safely stored for your convenience.
                 <br/><br/>
                 Combined, these articles point to <b>{{ total_links }}</b> other places on the internet.
-
+                <br/><br/>
+                Click <a href='/source'>here</a> to have a look at the breakdown, and start browsing the database.
                <br/><br/>
                 {% if total_errors %}
-                    <b>{{ total_errors }}</b> error{{ total_errors|pluralize }} occurred.
+                    <b>{{ total_errors }}</b> error{{ total_errors|pluralize }} occurred. We'll need to look into that.
                 {% else %}
                     No error occurred. This is pretty nice.
                 {% endif%}
