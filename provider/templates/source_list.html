@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %} Cite your sources.  {% endblock %}
+
+
+{% block content %}
+   <br/>
+   <h3>These are all your content providers.</h3>
+   <br/>    <br/>
+
+    {% for source in sources %}
+
+        <div class="box" style="text-align:center;">
+            <h1>{{ source.name }}</h1>
+
+            This source currently has <b>{{ source.articles|length }}</b> article{{  source.articles|length|pluralize }}.<br/>
+            <a href="/source/{{ source.name }}"> Go browse them. </a>
+        </div>
+
+    {% endfor %}
+{% endblock %}
