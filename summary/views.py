@@ -10,18 +10,26 @@ from providerstats import ProviderStats
 
 STATIC_DATA_PATH = os.path.join(os.path.dirname(__file__), '../static_data')
 
+
+
+def load_sidebar_data():
+    overall_stats = jsondb.get_overall_statistics(STATIC_DATA_PATH)
+    last_update = jsondb.get_last_status_update(STATIC_DATA_PATH)
+
+    res = {}
+    res.update(overall_stats)
+    res.update(last_update)
+    return res
+
+
+
 def index(request):
     t = loader.get_template('summary.html')
 
     fetched_date, articles, errors = jsondb.get_latest_fetched_articles(STATIC_DATA_PATH)
 
     template_values = {'all_articles':articles}
-
-    stats = jsondb.get_last_status_update(STATIC_DATA_PATH)
-    template_values.update(stats)
-
-    overall_stats = jsondb.get_overall_statistics(STATIC_DATA_PATH)
-    template_values.update(overall_stats)
+    template_values.update(load_sidebar_data())
 
     c = Context(template_values)
 
