@@ -36,7 +36,27 @@ def archives(request):
 
 
 def show_source_summary(request, source_name):
-    return HttpResponse('summary for source : '+source_name)
+    values = {}
+    values.update(base_template.load_sidebar_data(STATIC_DATA_PATH))
+    values.update(base_template.load_footer_data())
+
+    available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
+    if source_name in available_sources:
+        all_days = jsondb.get_all_days(STATIC_DATA_PATH, source_name)
+
+        values.update({'all_days':all_days, 'source_name':source_name})
+        t = loader.get_template('source_all_days.html')
+        c = Context(values)
+        return HttpResponse(t.render(c))
+    
+    else:
+        t = loader.get_template('source_day_not_found.html')
+        values.update({'reason':'There is no content provider with that id : {0}'.format(source_name)})
+        c = Context(values)
+        return HttpResponse(t.render(c))
+
+
+
 
 
 
@@ -99,14 +119,16 @@ def show_source_day_summary(request, source_name, year, month, day):
             # render invalid date
             t = loader.get_template('source_day_not_found.html')
             c = Context(values)
+            values.update({'reason':'There is no data to show you for that date : ' + datetime(y,m,d).strftime('%B %d, %Y')})
             return HttpResponse(t.render(c))
     else:
         # render invalid source
         t = loader.get_template('source_day_not_found.html')
+        values.update({'reason':'There is no content provider with that id : {0}'.format(source_name)})
         c = Context(values)
         return HttpResponse(t.render(c))
 
 
 
 def show_source_day_batch_summary(request, source_name, year, month, day, time):
-    return HttpResponse(resp)
+    return HttpResponse('day batch summary : '+source_name+year+month+day+time)

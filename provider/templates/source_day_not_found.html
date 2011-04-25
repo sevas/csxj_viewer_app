@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Huho
+    Something went wrong
 {% endblock %}
 
 
 
 {% block content %}
-    There is no data for this.
+    <h2> We could not complete your request.</h2>
+    <br/>
+    <h3>{{ reason }}</h3>
+
+
 {% endblock %}
