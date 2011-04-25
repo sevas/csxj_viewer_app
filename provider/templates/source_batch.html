@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    All the articles in line, please.
+{% endblock %}
+
+
+
+{% block content %}
+
+    <h3>This is the detailled view of everything we stored for every article we encounter.</h3>
+
+    {% for article  in articles %}
+        <div class="box">
+            <span class="quiet">{{ article.pub_date|date:"l d F Y" }}</span>
+            <br/>
+            <h3><b>{{ article.title }} </b></h3>
+
+            The original article can be found <a href='{{ article.url }}'>here</a>.
+            <br/><br/>
+            {% if article.pub_time %}
+                It was published on <strong>{{ article.pub_date }}</strong> at <strong>{{ article.pub_time }}</strong>.
+            {% else %}
+                It was published on <strong>{{ article.pub_date }}</strong>.
+            {% endif %}
+
+            It was downloaded and stored on <strong>{{ article.fetched_datetime|date:'F d, Y H:i' }}</strong> at <strong>{{ article.fetched_datetime|date:'H:i' }}</strong>.
+            <br/>
+
+            <br/>
+            <hr>
+            <strong> {{article.intro}}</strong>
+            <br/><br/>
+
+            {% for paragraph in article.content %}
+                <p>{{ paragraph}}</p>
+            {% endfor %}
+           
+
+            <hr>
+            {% if article.internal_links %}
+
+                {% with num_links=article.internal_links|length %}
+                     This story has <b>{{ num_links }}</b> internal link{{ num_links|pluralize }}
+                {% endwith %}
+                <br/>
+                {% for link in article.internal_links %}
+                    <div>
+                        <a href='{{link.0}}'> {{  link.1 }}</a>
+
+                       
+                        {% for tag in link.2 %}
+                            <span style="font-size:smaller;border-style:solid; border-width:1px;padding:1px">{{ tag }}</span>
+                        {% endfor %}
+
+                    </div>
+                    <br/>
+                {% endfor %}
+
+
+            {% endif %}
+            <br/><br/>
+            {% if article.external_links %}
+                {% with num_links=article.external_links|length %}
+                 This story has <b>{{ num_links }}</b> external link{{ num_links|pluralize }}.
+                {% endwith %}
+
+                <br/>
+                {% for link in article.external_links %}
+                    <div>
+                        <a href='{{link.0}}'> {{  link.1 }}</a>
+                        {% for tag in link.2 %}
+                              <span style="font-size:smaller;border-style:solid; border-width:1px;padding:1px">{{ tag }}</span>
+                          {% endfor %}
+
+                    </div>
+                {% endfor %}
+
+            {% endif %}
+
+
+
+        </div>
+
+
+    {% endfor %}
+
+
+
+{% endblock %}

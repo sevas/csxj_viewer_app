@@ -29,11 +29,6 @@ def index(request):
     return HttpResponse(t.render(c))
 
 
-def archives(request):
-    t = loader.get_template('source_main.html')
-
-    return HttpResponse(t.render({}))
-
 
 def show_source_summary(request, source_name):
     values = {}
@@ -130,5 +125,48 @@ def show_source_day_summary(request, source_name, year, month, day):
 
 
 
-def show_source_day_batch_summary(request, source_name, year, month, day, time):
+def show_source_day_batch_summary(request, source_name, year, month, day, hours, minutes, seconds):
+    y, m, d = [int(i) for i in (year, month, day)]
+    h, mm, s = [int(i) for i in (hours, minutes, seconds)]
+
+    values = {}
+    values.update(base_template.load_sidebar_data(STATIC_DATA_PATH))
+    values.update(base_template.load_footer_data())
+
+
+    available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
+    if source_name in available_sources:
+        date_string = '{0}-{1}-{2}'.format(year, month, day)
+        available_days = jsondb.get_all_days(STATIC_DATA_PATH, source_name)
+        if date_string in available_days:
+            available_batches = jsondb.get_all_batches(STATIC_DATA_PATH, source_name, date_string)
+            batch_string = '{0}.{1}.{2}'.format(hours, minutes, seconds)
+            
+            if batch_string in available_batches:
+                articles = jsondb.get_articles_from_batch(STATIC_DATA_PATH, source_name, date_string, batch_string)
+                values.update({'articles':articles})
+                t = loader.get_template('source_batch.html')
+                c = Context(values)
+                return HttpResponse(t.render(c))
+
+            else:
+                t = loader.get_template('source_day_not_found.html')
+                c = Context(values)
+                asked_datetime = datetime(y,m,d, h, mm, s)
+                values.update({'reason':'This source has no data to show you for that date and time : ' + asked_datetime.strftime('%B %d, %Y at %H:%M:%S') })
+                return HttpResponse(t.render(c))
+
+        else:
+            # render invalid date
+            t = loader.get_template('source_day_not_found.html')
+            c = Context(values)
+            values.update({'reason':'There is no data to show you for that date : ' + datetime(y,m,d).strftime('%B %d, %Y')})
+            return HttpResponse(t.render(c))
+    else:
+        t = loader.get_template('source_day_not_found.html')
+        values.update({'reason':'There is no content provider with that id : {0}'.format(source_name)})
+        c = Context(values)
+        return HttpResponse(t.render(c))
+    
+
     return HttpResponse('day batch summary : '+source_name+year+month+day+time)

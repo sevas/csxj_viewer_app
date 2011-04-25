@@ -172,3 +172,19 @@ def get_articles_per_batch(db_root, source_name, date_string):
 
     all_batches.sort(key=lambda x: x[0])
     return all_batches
+
+
+
+def get_all_batches(db_root, source_name, date_string):
+    path = os.path.join(db_root, source_name, date_string)
+    all_batches = os.listdir(path)
+    all_batches.sort()
+    return all_batches
+
+
+def get_articles_from_batch(db_root, source_name, date_string, batch_time):
+     json_file = os.path.join(db_root, source_name, date_string, batch_time, 'articles.json')
+     with open(json_file, 'r') as f:
+        json_content = json.load(f)
+        articles = [ArticleData.from_json(json_string) for json_string in json_content['articles']]
+        return articles
