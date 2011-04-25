@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Summary for {{ current_date|date:'d F' }} in {{ source_name }}
+{% endblock %}
+
+
+{% block content %}
+    <h3> These are the stories fetched on {{ current_date|date:'F d, Y' }}.</h3>
+
+    <div id="span-15">
+
+            {% if prev_day %}
+                <a href='/source/{{ source_name }}/{{ prev_day }}'>&laquo; Previous day</a>
+            {% else %}
+                <span class="quiet"><strong>&laquo; No previous day</strong></span>
+            {% endif %}
+
+        <span style="float:right" >
+            {% if next_day %}
+                <a href='/source/{{ source_name }}/{{ next_day }}'>Next day &raquo;</a>
+            {% else %}
+                <span class="quiet"><strong> No next day &raquo;</strong></span>
+            {% endif %}
+        </span>
+    </div>
+
+    <br/>
+
+    
+    {% for batch_time,articles in articles_per_batch %}
+
+        <div class="box">
+            <span class="quiet">{{ batch_time }}</span><br/><br/>
+
+            {% if articles %}
+                <ul>
+                {% for article in articles %}
+                    <li>{{ article.title}} </li>
+                {% endfor %}
+                </ul>
+
+                <br/>
+                <a href='/source/{{ source_name }}/{{ current_date|date:'Y-m-d' }}/{{ batch_time }}'>Click for details</a>
+
+            {% else %}
+                Nothing new was found at that time.
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+
+    <br/>
+    <div id="span-15">
+
+            {% if prev_day %}
+                <a href='/source/{{ source_name }}/{{ prev_day }}'>&laquo; Previous day</a>
+            {% else %}
+                <span class="quiet"><strong>&laquo; No previous day</strong></span>
+            {% endif %}
+
+        <span style="float:right" >
+            {% if next_day %}
+                <a href='/source/{{ source_name }}/{{ next_day }}'>Next day &raquo;</a>
+            {% else %}
+                <span class="quiet"><strong> No next day &raquo;</strong></span>
+            {% endif %}
+        </span>
+    </div>
+
+
+{% endblock %}

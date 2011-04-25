@@ -150,3 +150,25 @@ def get_per_source_statistics(db_root):
         source_stats[source_name] = ProviderStats.load_from_file(stats_filename)
 
     return source_stats
+
+
+def get_all_days(db_root, source_name):
+    all_days = get_subdirectories(os.path.join(db_root, source_name))
+    all_days.sort()
+    return all_days
+
+
+def get_articles_per_batch(db_root, source_name, date_string):
+    path = os.path.join(db_root, source_name, date_string)
+
+    all_batch_times = os.listdir(path)
+    all_batches = []
+    for batch_time in all_batch_times:
+        json_file = os.path.join(path, batch_time, 'articles.json')
+        with open(json_file, 'r') as f:
+            json_content = json.load(f)
+            articles = [ArticleData.from_json(json_string) for json_string in json_content['articles']]
+            all_batches.append((batch_time, articles))
+
+    all_batches.sort(key=lambda x: x[0])
+    return all_batches

@@ -6,6 +6,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 urlpatterns = patterns('',
     # Examples:
+    url(r'^404/', 'befr_news_viewer_app.errors.views.custom_404'),
     url(r'^source/', include('befr_news_viewer_app.provider.urls')),
     url(r'^$', 'befr_news_viewer_app.summary.views.index'),
 
