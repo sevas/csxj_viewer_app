@@ -57,7 +57,6 @@ def show_source_summary(request, source_name):
 
 
 
-
 def find_next_and_prev_days(current_day, available_days):
     """
     From the directory list ('YYYY-MM-DD'), find the next a previous days available,
@@ -92,10 +91,11 @@ def find_next_and_prev_days(current_day, available_days):
     return prev_day, next_day
 
 
+
 def show_source_day_summary(request, source_name, year, month, day):
     """
     Renders the summary for one day of crawling.
-    Just shows the list of days for which we have data. 
+    Shows a list of all articles downloaded that day, grouped by 'batch'
     """
     y, m, d = [int(i) for i in (year, month, day)]
 
