@@ -29,36 +29,43 @@ def index(request):
     return HttpResponse(t.render(c))
 
 
+def render_not_found(reason):
+    values = base_template.load_all_common_values(STATIC_DATA_PATH)
+    
+    t = loader.get_template('source_day_not_found.html')
+    values.update(dict(reason=reason))
+    c = Context(values)
+    return HttpResponse(t.render(c))
+
+
 
 def show_source_summary(request, source_name):
-    values = {}
-    values.update(base_template.load_sidebar_data(STATIC_DATA_PATH))
-    values.update(base_template.load_footer_data())
 
     available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
     if source_name in available_sources:
-        all_days = jsondb.get_all_days(STATIC_DATA_PATH, source_name)
+        values = base_template.load_all_common_values(STATIC_DATA_PATH)
 
+        all_days = jsondb.get_all_days(STATIC_DATA_PATH, source_name)
         values.update({'all_days':all_days, 'source_name':source_name})
         t = loader.get_template('source_all_days.html')
         c = Context(values)
+
         return HttpResponse(t.render(c))
-    
     else:
-        t = loader.get_template('source_day_not_found.html')
-        values.update({'reason':'There is no content provider with that id : {0}'.format(source_name)})
-        c = Context(values)
-        return HttpResponse(t.render(c))
-
-
-
-
+        return render_not_found('There is no content provider with that id : {0}'.format(source_name))
 
 
 
 
 
 def find_next_and_prev_days(current_day, available_days):
+    """
+    From the directory list ('YYYY-MM-DD'), find the next a previous days available,
+    to generate the 'Previous Day' and 'Next Day' links.
+
+    current_day is a 'YYYY-MM-DD' string, and is expected to exist.
+    available_days is a sorted list of 'YYYY-MM-DD' strings,
+    """
     idx = available_days.index(current_day)
     num_days = len(available_days)
 
@@ -86,16 +93,20 @@ def find_next_and_prev_days(current_day, available_days):
 
 
 def show_source_day_summary(request, source_name, year, month, day):
+    """
+    Renders the summary for one day of crawling.
+    Just shows the list of days for which we have data. 
+    """
     y, m, d = [int(i) for i in (year, month, day)]
-    values = {}
-    values.update(base_template.load_sidebar_data(STATIC_DATA_PATH))
-    values.update(base_template.load_footer_data())
+
 
     available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
     if source_name in available_sources:
         date_string = '{0}-{1}-{2}'.format(year, month, day)
         available_days = jsondb.get_all_days(STATIC_DATA_PATH, source_name)
         if date_string in available_days:
+            values = base_template.load_all_common_values(STATIC_DATA_PATH)
+
             prev_day, next_day = find_next_and_prev_days(date_string, available_days)
             articles_per_batch = jsondb.get_articles_per_batch(STATIC_DATA_PATH, source_name, date_string)
 
@@ -109,30 +120,16 @@ def show_source_day_summary(request, source_name, year, month, day):
             c = Context(values)
             t = loader.get_template('source_day.html')
             return HttpResponse(t.render(c))
-            
         else:
-            # render invalid date
-            t = loader.get_template('source_day_not_found.html')
-            c = Context(values)
-            values.update({'reason':'There is no data to show you for that date : ' + datetime(y,m,d).strftime('%B %d, %Y')})
-            return HttpResponse(t.render(c))
+            return render_not_found('There is no data to show you for that date : ' + datetime(y,m,d).strftime('%B %d, %Y'))
     else:
-        # render invalid source
-        t = loader.get_template('source_day_not_found.html')
-        values.update({'reason':'There is no content provider with that id : {0}'.format(source_name)})
-        c = Context(values)
-        return HttpResponse(t.render(c))
+        return render_not_found('There is no content provider with that id : {0}'.format(source_name))
 
 
 
 def show_source_day_batch_summary(request, source_name, year, month, day, hours, minutes, seconds):
     y, m, d = [int(i) for i in (year, month, day)]
     h, mm, s = [int(i) for i in (hours, minutes, seconds)]
-
-    values = {}
-    values.update(base_template.load_sidebar_data(STATIC_DATA_PATH))
-    values.update(base_template.load_footer_data())
-
 
     available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
     if source_name in available_sources:
@@ -143,6 +140,7 @@ def show_source_day_batch_summary(request, source_name, year, month, day, hours,
             batch_string = '{0}.{1}.{2}'.format(hours, minutes, seconds)
             
             if batch_string in available_batches:
+                values = base_template.load_all_common_values(STATIC_DATA_PATH)
                 articles = jsondb.get_articles_from_batch(STATIC_DATA_PATH, source_name, date_string, batch_string)
                 values.update({'articles':articles})
                 t = loader.get_template('source_batch.html')
@@ -150,23 +148,8 @@ def show_source_day_batch_summary(request, source_name, year, month, day, hours,
                 return HttpResponse(t.render(c))
 
             else:
-                t = loader.get_template('source_day_not_found.html')
-                c = Context(values)
-                asked_datetime = datetime(y,m,d, h, mm, s)
-                values.update({'reason':'This source has no data to show you for that date and time : ' + asked_datetime.strftime('%B %d, %Y at %H:%M:%S') })
-                return HttpResponse(t.render(c))
-
+                return render_not_found('This source has no data to show you for that date and time : ' + asked_datetime.strftime('%B %d, %Y at %H:%M:%S'))
         else:
-            # render invalid date
-            t = loader.get_template('source_day_not_found.html')
-            c = Context(values)
-            values.update({'reason':'There is no data to show you for that date : ' + datetime(y,m,d).strftime('%B %d, %Y')})
-            return HttpResponse(t.render(c))
+            return render_not_found('There is no data to show you for that date : ' + datetime(y,m,d).strftime('%B %d, %Y'))
     else:
-        t = loader.get_template('source_day_not_found.html')
-        values.update({'reason':'There is no content provider with that id : {0}'.format(source_name)})
-        c = Context(values)
-        return HttpResponse(t.render(c))
-    
-
-    return HttpResponse('day batch summary : '+source_name+year+month+day+time)
+        return render_not_found('There is no content provider with that id : {0}'.format(source_name))
