@@ -21,6 +21,6 @@ sys.path[:0] = new_sys_path
 
 # import from down here to pull in possible virtualenv django install
 from django.core.handlers.wsgi import WSGIHandler
-os.environ['DJANGO_SETTINGS_MODULE'] = '.settings_prod'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings_prod'
 
 application = WSGIHandler()
