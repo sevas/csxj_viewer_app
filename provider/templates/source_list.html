@@ -11,7 +11,7 @@
     {% for source_name, source_stats in sources.items %}
 
         <div class="box" style="text-align:center;">
-            <h1><strong>{{ source_name }}</strong></a></h1>
+            <h1><strong>{{ source_name }}</strong></h1>
 
              {% with total_links=source_stats.n_links %}
                 This source already provided <strong>{{ total_links }}</strong> link{{ total_links|pluralize }}

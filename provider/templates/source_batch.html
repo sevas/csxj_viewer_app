@@ -9,13 +9,13 @@
 
 {% block content %}
 
-    <h3>This is the detailled view of everything we stored for every article we encounter.</h3>
+    <h3>This is the detailed view of everything we stored for every article we encounter.</h3>
 
     {% for article  in articles %}
         <div class="box">
             <span class="quiet">{{ article.pub_date|date:"l d F Y" }}</span>
             <br/>
-            <h3><b>{{ article.title }} </b></h3>
+            <h3><strong>{{ article.title }} </strong></h3>
 
             The original article can be found <a href='{{ article.url }}'>here</a>.
             <br/><br/>
@@ -42,7 +42,7 @@
             {% if article.internal_links %}
 
                 {% with num_links=article.internal_links|length %}
-                     This story has <b>{{ num_links }}</b> internal link{{ num_links|pluralize }}
+                     This story has <strong>{{ num_links }}</strong> internal link{{ num_links|pluralize }}
                 {% endwith %}
                 <br/>
                 {% for link in article.internal_links %}
@@ -63,7 +63,7 @@
             <br/><br/>
             {% if article.external_links %}
                 {% with num_links=article.external_links|length %}
-                 This story has <b>{{ num_links }}</b> external link{{ num_links|pluralize }}.
+                 This story has <strong>{{ num_links }}</strong> external link{{ num_links|pluralize }}.
                 {% endwith %}
 
                 <br/>
@@ -78,14 +78,6 @@
                 {% endfor %}
 
             {% endif %}
-
-
-
         </div>
-
-
     {% endfor %}
-
-
-
 {% endblock %}
