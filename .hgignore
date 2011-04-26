@@ -1,4 +1,4 @@
 syntax: glob
-static_data/
+static_data*/
 *.pyc
 .idea/
