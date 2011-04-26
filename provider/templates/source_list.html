@@ -20,8 +20,24 @@
              {% with total_articles=source_stats.n_articles%}
                 <strong>{{ total_articles }}</strong> article{{  total_articles|pluralize }}.
              {% endwith %}
-                <br/><br/>
-                <a href="/source/{{ source_name }}"> Go browse them. </a>
+
+            <br/>
+            {% with total_errors=source_stats.n_errors %}
+                {% if total_errors %}
+
+
+                <span class="quiet"> It also generated
+                <strong>{{ total_errors }}</strong> error{{  total_errors|pluralize }}.
+                </span>
+                {% else %}
+                    <span class="quiet">
+                        And no error occurred here.
+                    </span>
+                {% endif %}
+             {% endwith %}
+
+            <br/><br/>
+            <a href="/source/{{ source_name }}"> Go browse them. </a>
 
         </div>
 
