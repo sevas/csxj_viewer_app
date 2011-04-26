@@ -105,7 +105,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'befr_news_viewer_app.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),
                  os.path.join(os.path.dirname(__file__), 'summary', 'templates'),
