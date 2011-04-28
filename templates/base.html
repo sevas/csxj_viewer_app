@@ -40,7 +40,7 @@
                     from <strong>{{ num_providers }}</strong> source{{ num_providers|pluralize }} were fetched.
                     <br/><br/>
                     {% if num_errors %}
-                        {{ num_errors }} error{{ num_errors|pluralize }}.
+                        {{ num_errors }} error{{ num_errors|pluralize }} occurred. And that is terrible.
                     {% else %}
                         No error occurred.
                     {% endif%}
