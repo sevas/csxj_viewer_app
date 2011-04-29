@@ -7,8 +7,11 @@
 
 {% block content %}
 
-    <h3>These are all the dates for which we stored articles.</h3>
-    <br/>
+    <h1><strong>{{ source_name }}</strong></h1>
+
+    <h3>Here are a bunch of <a href='/source/{{ source_name }}/graphs'>scientific graphs</a> about this content provider.</h3>
+
+    <h3>And below are all the dates for which we stored articles.</h3>
     <div class="box">
         <ul>
         {% for day in all_days %}

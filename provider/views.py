@@ -142,7 +142,7 @@ def show_source_day_batch_summary(request, source_name, year, month, day, hours,
             if batch_string in available_batches:
                 values = base_template.load_all_common_values(STATIC_DATA_PATH)
                 articles = jsondb.get_articles_from_batch(STATIC_DATA_PATH, source_name, date_string, batch_string)
-                values.update({'articles':articles})
+                values.update({'articles':articles, 'source_name':source_name})
                 t = loader.get_template('source_batch.html')
                 c = Context(values)
                 return HttpResponse(t.render(c))
