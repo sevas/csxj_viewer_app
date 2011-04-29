@@ -161,7 +161,7 @@ def get_all_days(db_root, source_name):
 def get_articles_per_batch(db_root, source_name, date_string):
     path = os.path.join(db_root, source_name, date_string)
 
-    all_batch_times = os.listdir(path)
+    all_batch_times = get_subdirectories(path)
     all_batches = []
     for batch_time in all_batch_times:
         json_file = os.path.join(path, batch_time, 'articles.json')
@@ -177,7 +177,7 @@ def get_articles_per_batch(db_root, source_name, date_string):
 
 def get_all_batches(db_root, source_name, date_string):
     path = os.path.join(db_root, source_name, date_string)
-    all_batches = os.listdir(path)
+    all_batches = get_subdirectories(path)
     all_batches.sort()
     return all_batches
 
