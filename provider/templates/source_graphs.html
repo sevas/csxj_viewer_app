@@ -9,19 +9,23 @@
     <h3>These are some graphs.
     One day they might even provide useful insight.</h3>
 
-    <a href='/static/figures/{{ source_name }}_number_of_links.png'>
-        <img class='shadow' src='/static/figures/{{ source_name }}_number_of_links.png' width=100% />
-    </a>
-    <br/><br/>
-    <a href='/static/figures/{{ source_name }}_articles_by_category.png'>
-        <img class='shadow' src='/static/figures/{{ source_name }}_articles_by_category.png' width=100%/>
-    </a>
-    <br/><br/>
-    <a href='/static//figures/{{ source_name }}_article_link_ratio.png'>
-        <img class='shadow' src='/static//figures/{{ source_name }}_article_link_ratio.png' width=100%/>
-    </a>
-    <br/><br/>
+    <div class='graph'>
+        <a href='/static/figures/{{ source_name }}_number_of_links.png'>
+            <img class='shadow' src='/static/figures/{{ source_name }}_number_of_links.png' width=100% />
+        </a>
+    </div>
 
+    <div class='graph'>
+        <a href='/static/figures/{{ source_name }}_articles_by_category.png'>
+            <img class='shadow' src='/static/figures/{{ source_name }}_articles_by_category.png' width=100%/>
+        </a>
+    </div>
+
+    <div class='graph'>
+        <a href='/static/figures/{{ source_name }}_article_link_ratio.png'>
+            <img class='shadow' src='/static//figures/{{ source_name }}_article_link_ratio.png' width=100%/>
+        </a>
+    </div>
 
 {% endblock %}
 
