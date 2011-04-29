@@ -153,3 +153,17 @@ def show_source_day_batch_summary(request, source_name, year, month, day, hours,
             return render_not_found('There is no data to show you for that date : ' + datetime(y,m,d).strftime('%B %d, %Y'))
     else:
         return render_not_found('There is no content provider with that id : {0}'.format(source_name))
+
+
+
+def show_source_graphs(request, source_name):
+    available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
+    if source_name in available_sources:
+        values = base_template.load_all_common_values(STATIC_DATA_PATH)
+        values.update({'source_name':source_name})
+
+        t = loader.get_template('source_graphs.html')
+        c = Context(values)
+        return HttpResponse(t.render(c))
+    else:
+        return render_not_found('There is no content provider with that id : {0}'.format(source_name))
