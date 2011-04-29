@@ -3,18 +3,39 @@ __author__ = 'sevas'
 
 from collections import namedtuple
 from datetime import datetime, date, time
-try:
-    import json
-except ImportError:
-    import simplejson as json
+import urlparse
+import json
 
 
 TaggedURL = namedtuple('TaggedURL', 'URL title tags')
 
 
+def make_tagged_url(url, title, tags):
+    return TaggedURL(URL=url, title=title, tags=tags)
+
+
 def tag_URL((url, title), tags):
     return TaggedURL(URL=url, title=title, tags=tags)
 
+
+def classify_and_tag(url, own_netlog, associated_sites):
+    """
+    """
+    tags = []
+    parsed = urlparse.urlparse(url)
+    scheme, netloc, path, params, query, fragment = parsed
+    if netloc:
+        if netloc == own_netlog:
+            tags = ['internal']
+        else:
+            if netloc in associated_sites:
+                tags = associated_sites[netloc]
+            else:
+                tags = ['external']
+    else:
+        tags = ['internal']
+
+    return tags
 
 
 def count_words(some_text):
@@ -27,6 +48,36 @@ def make_dict_keys_str(a_dict):
     return dict(items)
 
 
+def datetime_to_string(dt):
+    return dt.strftime('%Y-%m-%dT%H:%M:%S')
+
+
+def datetime_from_string(s):
+    return datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
+
+
+def date_to_string(d):
+    return d.strftime('%Y-%m-%d')
+
+
+def date_from_string(s):
+    year, month, day = [int(i) for i in s.split('-')]
+    return date(year, month, day)
+
+
+def time_to_string(t):
+    if t:
+        return t.strftime('%H:%S')
+    else:
+        return None
+
+def time_from_string(s):
+    if s:
+        h, m = [int(i) for i in s.split(':')]
+        return time(h, m)
+    else:
+        return None
+
 class ArticleData(object):
     """
     A glorified dict to keep the extracted metadata and content of one article.
@@ -35,7 +86,7 @@ class ArticleData(object):
 
     def __init__(self, url, title,
                  pub_date, pub_time, fetched_datetime,
-                 external_links, internal_links,
+                 links,
                  category, author,
                  intro, content):
         """
@@ -47,14 +98,23 @@ class ArticleData(object):
         self.pub_time = pub_time
         self.fetched_datetime = fetched_datetime
 
-        self.external_links = external_links
-        self.internal_links = internal_links
+        self.links = links
 
         self.category = category
         self.author = author
 
         self.intro = intro
         self.content = content
+
+        
+    @property
+    def external_links(self):
+        return [l for l in self.links if 'external' in l.tags]
+
+
+    @property
+    def internal_links(self):
+        return [l for l in self.links if 'internal' in l.tags]
 
 
     def print_summary(self):
@@ -77,18 +137,14 @@ class ArticleData(object):
         Takes care of non natively serializable objects (such as datetime).
         """
         d = dict(self.__dict__)
-        # datetime, date and time objects are not json-serializable
 
+        # datetime, date and time objects are not json-serializable
         fetched_datetime = d['fetched_datetime']
-        d['fetched_datetime'] = fetched_datetime.strftime('%Y-%m-%dT%H:%M:%S')
+        d['fetched_datetime'] = datetime_to_string(fetched_datetime)
 
         pub_date, pub_time = d['pub_date'], d['pub_time']
-
-        d['pub_date'] = pub_date.strftime('%Y-%m-%d')
-        if pub_time:
-            d['pub_time'] = pub_time.strftime('%H:%S')
-        else:
-            d['pub_time'] = None
+        d['pub_date'] = date_to_string(pub_date)
+        d['pub_time'] = time_to_string(pub_time)
             
         return json.dumps(d)
 
@@ -103,17 +159,15 @@ class ArticleData(object):
         d = json.loads(json_string)
 
         date_string = d['fetched_datetime']
-        d['fetched_datetime'] = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S')
+        d['fetched_datetime'] = datetime_from_string(date_string)
 
         pub_date, pub_time = d['pub_date'],  d['pub_time']
-        year, month, day = [int(i) for i in pub_date.split('-')]
-        d['pub_date'] = date(year, month, day)
+        d['pub_date'] = date_from_string(pub_date)
+        d['pub_time'] = time_from_string(pub_time)
 
-        if pub_time:
-            h, m = [int(i) for i in pub_time.split(':')]
-            d['pub_time'] = time(h, m)
-        else:
-            d['pub_time'] = None
-
+        links = d['links']
+        tagged_urls = [make_tagged_url(url, title, tags) for (url, title, tags) in links]
+        d['links'] = tagged_urls
+        
         d = make_dict_keys_str(d)
         return kls(**d)
