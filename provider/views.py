@@ -1,11 +1,11 @@
-from django.http import HttpResponse
-from django.template import Context, loader
-
 import os, os.path
 from datetime import datetime
 
-from jsondb import jsondb
-from article import ArticleData
+from django.http import HttpResponse
+from django.template import Context, loader
+
+import csxj.db as csxjdb
+
 from common import base_template
 
 STATIC_DATA_PATH = os.path.join(os.path.dirname(__file__), '../static_data')
@@ -16,10 +16,10 @@ def index(request):
     sidebar_data =  base_template.load_sidebar_data(STATIC_DATA_PATH)
     d.update(sidebar_data)
 
-    source_stats = jsondb.get_per_source_statistics(STATIC_DATA_PATH)
+    source_stats = csxjdb.get_per_source_statistics(STATIC_DATA_PATH)
     d.update({'sources':source_stats})
 
-    overall_stats = jsondb.make_overall_statistics(source_stats)
+    overall_stats = csxjdb.make_overall_statistics(source_stats)
     d.update(overall_stats)
 
     d.update(base_template.load_footer_data())
@@ -41,11 +41,13 @@ def render_not_found(reason):
 
 def show_source_summary(request, source_name):
 
-    available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
+    available_sources = csxjdb.get_all_provider_names(STATIC_DATA_PATH)
     if source_name in available_sources:
+        p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
         values = base_template.load_all_common_values(STATIC_DATA_PATH)
 
-        all_days = jsondb.get_all_days(STATIC_DATA_PATH, source_name)
+        all_days = p.get_source_summary_for_all_days()
+        
         values.update({'all_days':all_days, 'source_name':source_name})
         t = loader.get_template('source_all_days.html')
         c = Context(values)
@@ -75,8 +77,8 @@ def find_next_and_prev_days(current_day, available_days):
            prev_day = None
            next_day = available_days[1]
         else:
-               prev_day = available_days[0]
-               next_day = None
+            prev_day = available_days[0]
+            next_day = None
     else:
         if idx == 0:
             prev_day = None
@@ -100,15 +102,16 @@ def show_source_day_summary(request, source_name, year, month, day):
     y, m, d = [int(i) for i in (year, month, day)]
 
 
-    available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
+    available_sources = csxjdb.get_all_provider_names(STATIC_DATA_PATH)
     if source_name in available_sources:
+        p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
         date_string = '{0}-{1}-{2}'.format(year, month, day)
-        available_days = jsondb.get_all_days(STATIC_DATA_PATH, source_name)
+        available_days = p.get_all_days()
         if date_string in available_days:
             values = base_template.load_all_common_values(STATIC_DATA_PATH)
 
             prev_day, next_day = find_next_and_prev_days(date_string, available_days)
-            articles_per_batch = jsondb.get_articles_per_batch(STATIC_DATA_PATH, source_name, date_string)
+            articles_per_batch = p.get_articles_per_batch(date_string)
 
             values.update({'current_date':datetime(y, m, d),
                            'prev_day':prev_day,
@@ -131,17 +134,17 @@ def show_source_day_batch_summary(request, source_name, year, month, day, hours,
     y, m, d = [int(i) for i in (year, month, day)]
     h, mm, s = [int(i) for i in (hours, minutes, seconds)]
 
-    available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
+    available_sources = csxjdb.get_all_provider_names(STATIC_DATA_PATH)
     if source_name in available_sources:
         date_string = '{0}-{1}-{2}'.format(year, month, day)
-        available_days = jsondb.get_all_days(STATIC_DATA_PATH, source_name)
+        available_days = csxjdb.get_all_days(STATIC_DATA_PATH, source_name)
         if date_string in available_days:
-            available_batches = jsondb.get_all_batches(STATIC_DATA_PATH, source_name, date_string)
+            available_batches = csxjdb.get_all_batches(STATIC_DATA_PATH, source_name, date_string)
             batch_string = '{0}.{1}.{2}'.format(hours, minutes, seconds)
             
             if batch_string in available_batches:
                 values = base_template.load_all_common_values(STATIC_DATA_PATH)
-                articles = jsondb.get_articles_from_batch(STATIC_DATA_PATH, source_name, date_string, batch_string)
+                articles = csxjdb.get_articles_from_batch(STATIC_DATA_PATH, source_name, date_string, batch_string)
                 values.update({'articles':articles, 'source_name':source_name})
                 t = loader.get_template('source_batch.html')
                 c = Context(values)
@@ -157,7 +160,7 @@ def show_source_day_batch_summary(request, source_name, year, month, day, hours,
 
 
 def show_source_graphs(request, source_name):
-    available_sources = jsondb.get_source_list(STATIC_DATA_PATH)
+    available_sources = csxjdb.get_all_provider_names(STATIC_DATA_PATH)
     if source_name in available_sources:
         values = base_template.load_all_common_values(STATIC_DATA_PATH)
         values.update({'source_name':source_name})

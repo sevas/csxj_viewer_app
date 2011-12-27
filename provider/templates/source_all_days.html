@@ -14,8 +14,20 @@
     <h3>And below are all the dates for which we stored articles.</h3>
     <div class="box">
         <ul>
-        {% for day in all_days %}
-           <li> <a href='/source/{{ source_name }}/{{ day}}'>{{day}}</a></li>
+        {% for day, article_count, error_count in all_days %}
+            {% if error_count  %}
+                <li> <a href='/source/{{ source_name }}/{{ day}}'>{{day}}:</a>
+                {{ article_count }} article{{ article_count|pluralize }} and <b>{{ error_count }}</b> error{{ error_count|pluralize }}
+                </li>
+
+            {% else %}
+                <li> <a href='/source/{{ source_name }}/{{ day}}'>{{day}}: </a>
+                    {{ article_count }} article{{ article_count|pluralize }}
+                </li>
+
+
+
+            {% endif %}
         {% endfor %}
         </ul>
     </div>
