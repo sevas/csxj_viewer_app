@@ -9,6 +9,11 @@
     <h1><strong>{{ source_name }}</strong></h1>
     <h3> These are the stories fetched on {{ current_date|date:'F d, Y' }}.</h3>
 
+    {% if error_count %}
+    <h4>However, be aware that there were <b>{{ error_count }}</b> error{{ error_count|pluralize }} that day.
+    </h4>
+    {% endif %}
+
     <div id="span-15">
 
             {% if prev_day %}
@@ -29,7 +34,7 @@
     <br/>
 
     
-    {% for batch_time,articles in articles_per_batch %}
+    {% for batch_time,articles,error_count in articles_per_batch %}
 
         <div class="box">
             <span class="quiet">{{ batch_time }}</span><br/><br/>
@@ -42,12 +47,16 @@
                 </ul>
 
                 <br/>
-                <a href='/source/{{ source_name }}/{{ current_date|date:'Y-m-d' }}/{{ batch_time }}'>Would you like to know more?</a>
+                <a href='/source/{{ source_name }}/{{ current_date|date:'Y-m-d' }}/{{ batch_time }}/articles'>Would you like to know more?</a>
 
             {% else %}
                 Nothing new was found at that time.
             {% endif %}
+            <br/><br/>
+            {% if error_count  %}
+                Downloading that batch yielded <a href="/source/{{ source_name }}/{{ current_date|date:'Y-m-d' }}/{{ batch_time }}/errors"><strong>{{ error_count }}</strong> error{{ error_count|pluralize }}.</a>
 
+            {% endif %}
         </div>
 
     {% endfor %}

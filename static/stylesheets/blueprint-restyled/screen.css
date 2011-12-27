@@ -299,3 +299,15 @@ h1 a {
 	/* For IE 5.5 - 7 */
 	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=0, Direction=0, Color='#000000');
 }
+
+
+.error_stacktrace{
+    font-family: Monaco, Consolas, "Courier New", monospace;
+    overflow: scroll;
+    padding: 8px 16px 8px 16px;
+    font-size: smaller;
+    border: 1px solid;
+    text-wrap: none;
+    border-color: #999;
+    background-color: #dbd8d4;
+}

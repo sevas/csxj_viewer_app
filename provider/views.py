@@ -93,7 +93,6 @@ def find_next_and_prev_days(current_day, available_days):
     return prev_day, next_day
 
 
-
 def show_source_day_summary(request, source_name, year, month, day):
     """
     Renders the summary for one day of crawling.
@@ -111,13 +110,14 @@ def show_source_day_summary(request, source_name, year, month, day):
             values = base_template.load_all_common_values(STATIC_DATA_PATH)
 
             prev_day, next_day = find_next_and_prev_days(date_string, available_days)
-            articles_per_batch = p.get_articles_per_batch(date_string)
+            articles_and_errorcounts_per_batch = p.get_articles_and_errorcounts_per_batch(date_string)
 
             values.update({'current_date':datetime(y, m, d),
                            'prev_day':prev_day,
                            'next_day':next_day,
-                           'articles_per_batch':articles_per_batch,
-                           'source_name':source_name
+                           'articles_per_batch':articles_and_errorcounts_per_batch,
+                           'source_name':source_name,
+                           'error_count':sum([err for (day, art, err) in articles_and_errorcounts_per_batch])
                           })
 
             c = Context(values)
@@ -130,23 +130,52 @@ def show_source_day_summary(request, source_name, year, month, day):
 
 
 
-def show_source_day_batch_summary(request, source_name, year, month, day, hours, minutes, seconds):
+def show_source_day_batch_articles(request, source_name, year, month, day, hours, minutes, seconds):
+    """
+    Renders the summary for one day of crawling.
+    Shows a list of all articles downloaded that day, grouped by 'batch'
+    """
+    def get_values_for_batch_articles(provider, date_string, batch_hour_string):
+        articles, error_count = provider.get_batch_content(date_string, batch_hour_string)
+        return {'articles':articles, 'source_name':source_name, 'error_count':error_count}
+
+    return render_batch_data(source_name, year, month, day, hours, minutes, seconds, 'source_batch.html', get_values_for_batch_articles)
+
+
+
+
+def show_source_day_batch_errors(request, source_name, year, month, day, hours, minutes, seconds):
+    """
+
+    """
+    def get_values_for_batch_errors(provider, date_string, batch_hour_string):
+        errors = provider.get_errors_from_batch(date_string, batch_hour_string)
+        return {'errors':errors, 'source_name':source_name}
+
+    return render_batch_data(source_name, year, month, day, hours, minutes, seconds, 'source_batch_errors.html', get_values_for_batch_errors)
+
+
+
+
+def render_batch_data(source_name, year, month, day, hours, minutes, seconds, template_filename, get_template_values_fn):
     y, m, d = [int(i) for i in (year, month, day)]
     h, mm, s = [int(i) for i in (hours, minutes, seconds)]
 
     available_sources = csxjdb.get_all_provider_names(STATIC_DATA_PATH)
     if source_name in available_sources:
+        p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
         date_string = '{0}-{1}-{2}'.format(year, month, day)
-        available_days = csxjdb.get_all_days(STATIC_DATA_PATH, source_name)
+        available_days = p.get_all_days()
         if date_string in available_days:
-            available_batches = csxjdb.get_all_batches(STATIC_DATA_PATH, source_name, date_string)
+            available_batches = p.get_all_batch_hours(date_string)
             batch_string = '{0}.{1}.{2}'.format(hours, minutes, seconds)
             
             if batch_string in available_batches:
                 values = base_template.load_all_common_values(STATIC_DATA_PATH)
-                articles = csxjdb.get_articles_from_batch(STATIC_DATA_PATH, source_name, date_string, batch_string)
-                values.update({'articles':articles, 'source_name':source_name})
-                t = loader.get_template('source_batch.html')
+            
+                values.update(get_template_values_fn(p, date_string, batch_string))
+                
+                t = loader.get_template(template_filename)
                 c = Context(values)
                 return HttpResponse(t.render(c))
 
@@ -156,6 +185,9 @@ def show_source_day_batch_summary(request, source_name, year, month, day, hours,
             return render_not_found('There is no data to show you for that date : ' + datetime(y,m,d).strftime('%B %d, %Y'))
     else:
         return render_not_found('There is no content provider with that id : {0}'.format(source_name))
+    
+
+
 
 
 
