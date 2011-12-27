@@ -1,7 +1,7 @@
 # Put this in /etc/apache2/sites-available, then symlink it  from  /etc/apache2/sites-enabled
 # Change the relevant values (path to site, path to wsgi script)
 
-# Don't forget to have Listen 8080 in /etc/apache2/ports.conf.
+# Don't forget to have Listen 8081 in /etc/apache2/ports.conf.
 # Or change the damn port. Don't tweak the app prefix.
 
 
@@ -16,7 +16,7 @@
     </Directory>
 
 
-    WSGIScriptAlias / /home/www/django-sites/csj_viewer_app/apache/django.wsgi
+    WSGIScriptAlias / /home/www/django-sites/csxj_viewer_app/apache/django.wsgi
 
 
     <Directory /home/www/django-sites/csxj_viewer_app/apache>

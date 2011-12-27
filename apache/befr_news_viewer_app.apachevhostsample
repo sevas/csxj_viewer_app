@@ -18,7 +18,7 @@
     WSGIScriptAlias / /home/www/django-sites/befr_news_viewer_app/apache/django.wsgi
 
 
-    <Directory /home/www/django-sites/befr_news_viewer_qpp/apache>
+    <Directory /home/www/django-sites/befr_news_viewer_app/apache>
         Order deny,allow
         Allow from all
     </Directory>
