@@ -23,5 +23,27 @@
         Allow from all
     </Directory>
 
+</VirtualHost>
+
+
+
+<VirtualHost *:8081>
+
+    Alias /static /home/www/django-sites/csxj_viewer_app/static
+
+    <Directory /home/www/django-sites/csxj_viewer_app/static>
+       Order deny,allow
+       Allow from all
+    </Directory>
+
+
+    WSGIScriptAlias / /home/www/django-sites/csj_viewer_app/apache/django.wsgi
+
+
+    <Directory /home/www/django-sites/csxj_viewer_app/apache>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
 
 </VirtualHost>
