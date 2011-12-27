@@ -3,30 +3,34 @@
 
 
 {% block title %}
-    Errors
+    All the errors in line, please
 {% endblock %}
 
 
 {% block content %}
 
     <h1><strong>{{ source_name }}</strong></h1>
-    <h3> These are the errors that occurred while retrieving articles on {{ current_date|date:'F d, Y' }}.</h3>
 
-    {% for error in errors %}
-        <div class="box">
-            There was something wrong while processing the following URL: <a href="{{ error.url }}">{{ error.url }}</a>
+    {% if errors %}
+        <h3> These are the errors that occurred while retrieving this batch of <a href="{{ batch_url }}/articles">articles</a>.</h3>
 
-            <br/><br/><br/>
-            Here is the stacktrace:
-            <br/>
-            <div class="error_stacktrace">
-            {% for line in error.stacktrace %}
-                {{ line }} <br/><br/>
-            {% endfor %}
+        {% for error in errors %}
+            <div class="box">
+                There was something wrong while processing the following URL: <a href="{{ error.url }}">{{ error.url }}</a>
+
+                <br/><br/><br/>
+                Here is the stacktrace:
+                <br/>
+                <div class="error_stacktrace">
+                {% for line in error.stacktrace %}
+                    {{ line }} <br/><br/>
+                {% endfor %}
+                </div>
+                <br/>
             </div>
-            <br/>
-        </div>
 
-    {% endfor %}
-
+        {% endfor %}
+    {% else %}
+        <h3>No error occurred while retrieving this batch of <a href="{{ batch_url }}/articles">articles</a>.</h3>
+    {% endif %}
 {% endblock %}

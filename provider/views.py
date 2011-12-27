@@ -137,7 +137,10 @@ def show_source_day_batch_articles(request, source_name, year, month, day, hours
     """
     def get_values_for_batch_articles(provider, date_string, batch_hour_string):
         articles, error_count = provider.get_batch_content(date_string, batch_hour_string)
-        return {'articles':articles, 'source_name':source_name, 'error_count':error_count}
+        return {'articles':articles,
+                'source_name':source_name,
+                'error_count':error_count,
+                'batch_url':"/source/{0}/{1}/{2}".format(source_name, date_string, batch_hour_string)}
 
     return render_batch_data(source_name, year, month, day, hours, minutes, seconds, 'source_batch.html', get_values_for_batch_articles)
 
@@ -150,7 +153,9 @@ def show_source_day_batch_errors(request, source_name, year, month, day, hours, 
     """
     def get_values_for_batch_errors(provider, date_string, batch_hour_string):
         errors = provider.get_errors_from_batch(date_string, batch_hour_string)
-        return {'errors':errors, 'source_name':source_name}
+        return {'errors':errors,
+                'source_name':source_name,
+                'batch_url':"/source/{0}/{1}/{2}".format(source_name, date_string, batch_hour_string)}
 
     return render_batch_data(source_name, year, month, day, hours, minutes, seconds, 'source_batch_errors.html', get_values_for_batch_errors)
 

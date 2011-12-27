@@ -10,73 +10,87 @@
     <h1><strong>{{ source_name }}</strong></h1>
     <h3>This is the detailed view of everything we stored for every article we encountered.</h3>
 
-    {% for article  in articles %}
-        <div class="box">
-            <span class="quiet">{{ article.pub_date|date:"l d F Y" }}</span>
-            <br/>
-            <h3><strong>{{ article.title }} </strong></h3>
+    {% if error_count %}
+        <h3>Also, <strong>{{ error_count }}</strong> error{{ error_count|pluralize }} were generated.
+        Maybe you want to check the <a href="{{ batch_url }}/errors">error page</a> for this batch.</h3>
+    {% endif %}
 
-            The original article can be found <a href='{{ article.url }}'>here</a>.
-            <br/><br/>
-            {% if article.pub_time %}
-                It was published on <strong>{{ article.pub_date }}</strong> at <strong>{{ article.pub_time }}</strong>.
-            {% else %}
-                It was published on <strong>{{ article.pub_date }}</strong>.
-            {% endif %}
-
-            It was downloaded and stored on <strong>{{ article.fetched_datetime|date:'F d, Y' }}</strong> at <strong>{{ article.fetched_datetime|date:'H:i' }}</strong>.
-            <br/>
-
-            <br/>
-            <hr>
-            <em> {{article.intro}}</em>
-            <br/><br/>
-
-            {% for paragraph in article.content %}
-                <p>{{ paragraph}}</p>
-            {% endfor %}
-           
-
-            <hr>
-            {% if article.internal_links %}
-
-                {% with num_links=article.internal_links|length %}
-                     This story has <strong>{{ num_links }}</strong> internal link{{ num_links|pluralize }}
-                {% endwith %}
+    <br/><br/>
+    {% if articles %}
+        {% for article  in articles %}
+            <div class="box">
+                <span class="quiet">{{ article.pub_date|date:"l d F Y" }}</span>
                 <br/>
-                {% for link in article.internal_links %}
-                    <div>
-                        <a href='{{link.0}}'> {{  link.1 }}</a>
+                <h3><strong>{{ article.title }} </strong></h3>
 
-                       
-                        {% for tag in link.2 %}
-                            <span style="font-size:smaller;border-style:solid; border-width:1px;padding:1px">{{ tag }}</span>
-                        {% endfor %}
+                The original article can be found <a href='{{ article.url }}'>here</a>.
+                <br/><br/>
+                {% if article.pub_time %}
+                    It was published on <strong>{{ article.pub_date }}</strong> at <strong>{{ article.pub_time }}</strong>.
+                {% else %}
+                    It was published on <strong>{{ article.pub_date }}</strong>.
+                {% endif %}
 
-                    </div>
+                It was downloaded and stored on <strong>{{ article.fetched_datetime|date:'F d, Y' }}</strong> at <strong>{{ article.fetched_datetime|date:'H:i' }}</strong>.
+                <br/>
+
+                <br/>
+                <hr>
+                <em> {{article.intro}}</em>
+                <br/><br/>
+
+                {% for paragraph in article.content %}
+                    <p>{{ paragraph}}</p>
+                {% endfor %}
+
+
+                <hr>
+                {% if article.internal_links %}
+
+                    {% with num_links=article.internal_links|length %}
+                         This story has <strong>{{ num_links }}</strong> internal link{{ num_links|pluralize }}
+                    {% endwith %}
                     <br/>
-                {% endfor %}
+                    {% for link in article.internal_links %}
+                        <div>
+                            <a href='{{link.0}}'> {{  link.1 }}</a>
 
 
-            {% endif %}
-            <br/><br/>
-            {% if article.external_links %}
-                {% with num_links=article.external_links|length %}
-                 This story has <strong>{{ num_links }}</strong> external link{{ num_links|pluralize }}.
-                {% endwith %}
+                            {% for tag in link.2 %}
+                                <span style="font-size:smaller;border-style:solid; border-width:1px;padding:1px">{{ tag }}</span>
+                            {% endfor %}
 
-                <br/>
-                {% for link in article.external_links %}
-                    <div>
-                        <a href='{{link.0}}'> {{  link.1 }}</a>
-                        {% for tag in link.2 %}
-                              <span style="font-size:smaller;border-style:solid; border-width:1px;padding:1px">{{ tag }}</span>
-                          {% endfor %}
+                        </div>
+                        <br/>
+                    {% endfor %}
 
-                    </div>
-                {% endfor %}
 
-            {% endif %}
-        </div>
-    {% endfor %}
+                {% endif %}
+                <br/><br/>
+                {% if article.external_links %}
+                    {% with num_links=article.external_links|length %}
+                     This story has <strong>{{ num_links }}</strong> external link{{ num_links|pluralize }}.
+                    {% endwith %}
+
+                    <br/>
+                    {% for link in article.external_links %}
+                        <div>
+                            <a href='{{link.0}}'> {{  link.1 }}</a>
+                            {% for tag in link.2 %}
+                                  <span style="font-size:smaller;border-style:solid; border-width:1px;padding:1px">{{ tag }}</span>
+                              {% endfor %}
+
+                        </div>
+                    {% endfor %}
+
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        No articles were retrieved.
+        {% if error_count %}
+            However, <strong>{{ error_count }}</strong> error{{ error_count|pluralize }} were generated.
+            Maybe you want to check the <a href="{{ batch_url }}/errors">error page</a> for this batch.
+        {% endif %}
+    {% endif %}
 {% endblock %}
