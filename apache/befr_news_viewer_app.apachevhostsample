@@ -5,24 +5,24 @@
 # Or change the damn port. Don't tweak the app prefix.
 
 
+<VirtualHost *:8080>
 
-<VirtualHost *:8081>
+    Alias /static /home/www/django-sites/befr_news_viewer_app/static
 
-    Alias /static /home/www/django-sites/csxj_viewer_app/static
-
-    <Directory /home/www/django-sites/csxj_viewer_app/static>
+    <Directory /home/www/django-sites/befr_news_viewer_app/static>
        Order deny,allow
        Allow from all
     </Directory>
 
 
-    WSGIScriptAlias / /home/www/django-sites/csj_viewer_app/apache/django.wsgi
+    WSGIScriptAlias / /home/www/django-sites/befr_news_viewer_app/apache/django.wsgi
 
 
-    <Directory /home/www/django-sites/csxj_viewer_app/apache>
+    <Directory /home/www/django-sites/befr_news_viewer_qpp/apache>
         Order deny,allow
         Allow from all
     </Directory>
 
-
 </VirtualHost>
+
+
