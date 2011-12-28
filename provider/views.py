@@ -22,12 +22,16 @@ def index(request):
 
 
     sources_data = dict()
+    total_queued_items_count = 0
     for source_name, stats in stats_by_source.items():
         p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
-        sources_data[source_name] = (stats, p.get_queued_items_count())
+        queued_items_count = p.get_queued_items_count()
+        total_queued_items_count += queued_items_count
+        sources_data[source_name] = (stats, queued_items_count)
 
     d.update({'sources_data':sources_data})
     d.update(base_template.load_footer_data())
+    d.update({'queued_items_count':total_queued_items_count})
 
     c = Context(d)
 
