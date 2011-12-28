@@ -146,7 +146,8 @@ def show_source_day_batch_articles(request, source_name, year, month, day, hours
     """
     def get_values_for_batch_articles(provider, date_string, batch_hour_string):
         articles, error_count = provider.get_batch_content(date_string, batch_hour_string)
-        return {'articles':articles,
+        enumerated_articles = enumerate(articles)
+        return {'articles':enumerated_articles,
                 'source_name':source_name,
                 'error_count':error_count,
                 'batch_url':"/source/{0}/{1}/{2}".format(source_name, date_string, batch_hour_string)}
