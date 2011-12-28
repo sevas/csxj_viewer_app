@@ -7,8 +7,10 @@
    <br/>
    <h3>These are all your content providers. </h3>
    <br/>    <br/>
+    {{ sources }}
 
-    {% for source_name, source_stats in sources.items %}
+    {% for source_name, data in sources_data.items %}
+        {% with source_stats=data.0  queued_items_count=data.1 %}
 
         <div class="box" style="text-align:center;">
             <h1><strong>{{ source_name }}</strong></h1>
@@ -37,12 +39,15 @@
              {% endwith %}
 
             <br/><br/>
-            You can <a href="/source/{{ source_name }}"> browse</a> them,. <br/><br/>
+            You can <a href="/source/{{ source_name }}"> browse</a> them, <br/><br/>
+
+            Have a look at the <strong>{{ queued_items_count }}</strong> item{{queued_items_count|pluralize  }}
+            in the <a href="/source/{{ source_name }}/queue">download queue</a>,<br/><br/>
+
             Or even look at
             <a href='/source/{{source_name  }}/graphs'>pretty graphs</a> about them.
-        
-
         </div>
+        {% endwith %}
 
     {% endfor %}
 {% endblock %}

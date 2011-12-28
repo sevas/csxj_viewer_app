@@ -16,12 +16,17 @@ def index(request):
     sidebar_data =  base_template.load_sidebar_data(STATIC_DATA_PATH)
     d.update(sidebar_data)
 
-    source_stats = csxjdb.get_per_source_statistics(STATIC_DATA_PATH)
-    d.update({'sources':source_stats})
-
-    overall_stats = csxjdb.make_overall_statistics(source_stats)
+    stats_by_source= csxjdb.get_per_source_statistics(STATIC_DATA_PATH)
+    overall_stats = csxjdb.make_overall_statistics(stats_by_source)
     d.update(overall_stats)
 
+
+    sources_data = dict()
+    for source_name, stats in stats_by_source.items():
+        p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
+        sources_data[source_name] = (stats, p.get_queued_items_count())
+
+    d.update({'sources_data':sources_data})
     d.update(base_template.load_footer_data())
 
     c = Context(d)
@@ -204,6 +209,24 @@ def show_source_graphs(request, source_name):
 
         t = loader.get_template('source_graphs.html')
         c = Context(values)
+        return HttpResponse(t.render(c))
+    else:
+        return render_not_found('There is no content provider with that id : {0}'.format(source_name))
+
+
+
+
+def show_download_queue(request, source_name):
+    available_sources = csxjdb.get_all_provider_names(STATIC_DATA_PATH)
+    if source_name in available_sources:
+        values = base_template.load_all_common_values(STATIC_DATA_PATH)
+
+        p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
+        download_queue = p.get_queued_batches_by_day()
+        values.update({'queued_items_by_day':download_queue,
+                       'source_name':source_name})
+        c = Context(values)
+        t = loader.get_template('download_queue.html')
         return HttpResponse(t.render(c))
     else:
         return render_not_found('There is no content provider with that id : {0}'.format(source_name))

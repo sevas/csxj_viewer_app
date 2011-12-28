@@ -20,6 +20,16 @@ def load_sidebar_data(db_root):
     return res
 
 
+def load_queued_items_count(db_root):
+    sources = csxjdb.get_all_provider_names(db_root)
+    queued_items_count = 0
+    for source_name in sources:
+        p = csxjdb.Provider(db_root, source_name)
+        queued_items_count += p.get_queued_items_count()
+
+    return {'queued_items_count':queued_items_count}
+
+
 def load_footer_data():
     return dict(version=version.VERSION)
 
@@ -29,4 +39,5 @@ def load_all_common_values(db_root):
     values = dict()
     values.update(load_sidebar_data(db_root))
     values.update(load_footer_data())
+    values.update(load_queued_items_count(db_root))
     return values
