@@ -21,6 +21,7 @@ def index(request):
     template_values = {'all_articles':articles}
     template_values.update(base_template.load_sidebar_data(STATIC_DATA_PATH))
     template_values.update(base_template.load_footer_data())
+    template_values.update(base_template.load_queued_items_count(STATIC_DATA_PATH))
     c = Context(template_values)
 
     return HttpResponse(t.render(c))
