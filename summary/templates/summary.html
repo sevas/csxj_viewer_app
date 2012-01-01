@@ -6,39 +6,29 @@
     <br/>
     <h3>This page is a summary of the articles downloaded last time we checked all the sources.</h3>
     <br/>    <br/>
-    {% for provider, articles in all_articles.items %}
-        <h1><strong><a href='/source/{{ provider.name }}'>{{ provider.name }}</a></strong></h1>
-        {% if articles %}
-            {% for article in articles %}
-            <div class='box'>
-                <span class="quiet">{{ article.pub_date|date:"l d F Y" }}</span>
-                <br/>
-                <h3><strong>{{ article.title }} </strong></h3>
-                <a href='{{ article.url }}'>Source</a>
-                <br/><br/>
+    {% for name, date, metainfo, url in summary_per_source%}
+        <h1><strong><a href='/source/{{ name}}'>{{ name }}</a></strong></h1>
+        <div class="box" style="text-align:center;">
 
-                {% with num_links=article.internal_links|length %}
-                This story has <strong>{{ num_links }}</strong> internal link{{ num_links|pluralize }}
-                {% endwith %}
+            <strong>{{ metainfo.article_count}}</strong> article{{  metainfo.article_count|pluralize }}
+            were downloaded last night. It fetched articles for <a href="{{ url }}">{{ date|date:'F d, Y' }}</a>.
+            <br/>
 
-                {% with num_links=article.external_links|length %}
-                and <strong>{{ num_links }}</strong> external link{{ num_links|pluralize }}.
-                {% endwith %}
-                <br/>
 
-                And it starts like this:
-                <blockquote>{{ article.intro }}</blockquote>
-            </div>
 
-            {% endfor  %}
-        {% else %}
-            <div class="box">
-                <div style="text-align: center;">
-                    <h2>No new articles were found</h2>
-                    Maybe you should have a look at the <a href="/source/{{ provider.name }}">archives</a>
-                </div>
-            </div>
-        {% endif %}
+            <br/>
+            {% if metainfo.error_count %}
+                <span> It also generated
+                <strong>{{ metainfo.error_count }}</strong> error{{  metainfo.error_count|pluralize }}.
+                </span>
+            {% else %}
+                <span class="quiet">
+                    And no error occurred.
+                </span>
+            {% endif %}
+    </div>
+
+
     <br/><br/>
     {% endfor %}
 

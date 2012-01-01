@@ -34,13 +34,12 @@
             <!-- About -->
             <h3><strong>Status</strong></h3>
             <div class="box">
-                <p>Last update was made on <strong>{{ update_date  }}</strong> at <strong>{{ update_time }}</strong>
-                   <br/>
-                    <strong>{{ num_articles }}</strong> article{{ num_articles|pluralize }}
+                <p>During the last update,
+                    <strong>{{ last_update_article_count }}</strong> article{{ last_update_article_count|pluralize }}
                     from <strong>{{ num_providers }}</strong> source{{ num_providers|pluralize }} were fetched.
                     <br/><br/>
-                    {% if num_errors %}
-                        {{ num_errors }} error{{ num_errors|pluralize }} occurred. And that is terrible.
+                    {% if last_update_error_count %}
+                        {{ last_update_error_count}} error{{ last_update_error_count|pluralize }} occurred. And that is terrible.
                     {% else %}
                         No error occurred.
                     {% endif%}
@@ -55,15 +54,15 @@
             <div class='box'>
                 Your database contains articles gathered from <strong>{{ start_date|date:"F d, Y" }}</strong> to <strong>{{ end_date|date:"F d, Y" }}</strong>.
                 <br/><br/>
-                During this period, <strong>{{ total_articles }}</strong> articles from <strong>{{ num_providers }}</strong> sources were fetched,
+                During this period, <strong>{{ total_article_count }}</strong> articles from <strong>{{ num_providers }}</strong> sources were fetched,
                 <span style="text-decoration: line-through;">carefully</span> analysed and safely stored for your convenience.
                 <br/><br/>
-                Combined, these articles point to <strong>{{ total_links }}</strong> other places on the internet.
+                Combined, these articles point to <strong>{{ total_link_count}}</strong> other places on the internet.
                 <br/><br/>
                 Go <a href="/source">here</a> to have a look at the breakdown, and start browsing the database.
                <br/><br/>
-                {% if total_errors %}
-                    <strong>{{ total_errors }}</strong> error{{ total_errors|pluralize }} occurred. We'll need to look into that.
+                {% if total_error_count %}
+                    <strong>{{ total_error_count }}</strong> error{{ total_error_count|pluralize }} occurred. We'll need to look into that.
                 {% else %}
                     No error occurred. This is pretty nice.
                 {% endif%}

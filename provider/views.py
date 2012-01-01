@@ -16,18 +16,25 @@ def index(request):
     sidebar_data =  base_template.load_sidebar_data(STATIC_DATA_PATH)
     d.update(sidebar_data)
 
-    stats_by_source= csxjdb.get_per_source_statistics(STATIC_DATA_PATH)
-    overall_stats = csxjdb.make_overall_statistics(stats_by_source)
-    d.update(overall_stats)
+    metainfo_by_source = dict()
+    overall_metainfo = {'article_count':0, 'error_count':0, 'link_count':0}
+    for source_name in csxjdb.get_all_provider_names(STATIC_DATA_PATH):
+        p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
+        source_metainfo = p.get_metainfo()
+        metainfo_by_source[source_name] = source_metainfo
+        for k in ['article_count', 'error_count', 'link_count']:
+            overall_metainfo[k] = source_metainfo[k]
+
+    d.update(overall_metainfo)
 
 
     sources_data = dict()
     total_queued_items_count = 0
-    for source_name, stats in stats_by_source.items():
+    for source_name, metainfo in metainfo_by_source.items():
         p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
         queued_items_count = p.get_queued_items_count()
         total_queued_items_count += queued_items_count
-        sources_data[source_name] = (stats, queued_items_count)
+        sources_data[source_name] = (metainfo, queued_items_count)
 
     d.update({'sources_data':sources_data})
     d.update(base_template.load_footer_data())

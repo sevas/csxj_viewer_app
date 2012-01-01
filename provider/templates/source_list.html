@@ -15,16 +15,16 @@
         <div class="box" style="text-align:center;">
             <h1><strong>{{ source_name }}</strong></h1>
 
-             {% with total_links=source_stats.n_links %}
+             {% with total_links=source_stats.link_count %}
                 This source already provided <strong>{{ total_links }}</strong> link{{ total_links|pluralize }}
              {% endwith  %}
                 from
-             {% with total_articles=source_stats.n_articles%}
+             {% with total_articles=source_stats.article_count%}
                 <strong>{{ total_articles }}</strong> article{{  total_articles|pluralize }}.
              {% endwith %}
 
             <br/>
-            {% with total_errors=source_stats.n_errors %}
+            {% with total_errors=source_stats.error_count %}
                 {% if total_errors %}
 
 
