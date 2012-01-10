@@ -22,9 +22,8 @@
                 Here is the stacktrace:
                 <br/>
                 <div class="error_stacktrace">
-                {% for line in error.stacktrace %}
-                    {{ line }} <br/><br/>
-                {% endfor %}
+                {{ error.stacktrace }}
+                
                 </div>
                 <br/>
             </div>
