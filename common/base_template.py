@@ -1,4 +1,5 @@
 import csxj.db as csxjdb
+import csxj
 import version
 
 
@@ -33,7 +34,7 @@ def load_queued_items_count(db_root):
 
 
 def load_footer_data():
-    return dict(version=version.VERSION)
+    return dict(version=version.VERSION, csxj_version=csxj.__version__)
 
 
 
