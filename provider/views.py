@@ -131,7 +131,6 @@ def show_source_day_summary(request, source_name, year, month, day):
             article_and_metainfos_per_batch = list()
             for batch_time, articles in articles_per_batch:
                 reprocessed_articles = p.get_reprocessed_batch_articles(date_string, batch_time)
-                print reprocessed_articles
                 for (time, repr_articles) in reprocessed_articles:
                     articles.extend(repr_articles)
 
