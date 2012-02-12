@@ -54,15 +54,37 @@
             <div class='box'>
                 Your database contains articles gathered from <strong>{{ start_date|date:"F d, Y" }}</strong> to <strong>{{ end_date|date:"F d, Y" }}</strong>.
                 <br/><br/>
-                During this period, <strong>{{ total_article_count }}</strong> articles from <strong>{{ num_providers }}</strong> sources were fetched,
-                <span style="text-decoration: line-through;">carefully</span> analysed and safely stored for your convenience.
-                <br/><br/>
-                Combined, these articles point to <strong>{{ total_link_count}}</strong> other places on the internet.
-                <br/><br/>
+
+
+                During this period, <strong>{{ article_count|add:reprocessed_article_count}}</strong> articles from
+                <strong>{{ num_providers }}</strong> sources were fetched.
+                <br/>
+                Combined, these articles point to <strong>{{ link_count|add:reprocessed_link_count}}</strong>
+                other places on the internet.
+                <br/>
+
                 Go <a href="/source">here</a> to have a look at the breakdown, and start browsing the database.
-               <br/><br/>
+                <br/><br/>
+
+
+
                 {% if total_error_count %}
-                    <strong>{{ total_error_count }}</strong> error{{ total_error_count|pluralize }} occurred. We'll need to look into that.
+                    Overall, <strong>{{total_error_count }}</strong> error{{ total_error_count|pluralize }}
+                    have occurred.
+                    <br/>
+
+                    {% if reprocessed_article_count %}
+                        <strong>{{ reprocessed_article_count }}</strong> error{{ reprocessed_article_count|pluralize }}
+                        have already been successfully reprocessed.
+                    {% endif %}
+
+                    {% if pending_error_count %}
+                        There are still <strong>{{ pending_error_count }}</strong> error{{ pending_error_count|pluralize }}
+                        longing for some attention.
+                    {% else %}
+                        There are no pending errors.
+                    {% endif %}
+
                 {% else %}
                     No error occurred. This is pretty nice.
                 {% endif%}

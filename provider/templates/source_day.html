@@ -10,7 +10,7 @@
     <h3> These are the stories fetched on {{ current_date|date:'F d, Y' }}.</h3>
 
     {% if error_count %}
-    <h4>However, be aware that there were <b>{{ error_count }}</b> error{{ error_count|pluralize }} that day.
+    <h4>However, be aware that there aree <b>{{ error_count }}</b> pending error{{ error_count|pluralize }} that day.
     </h4>
     {% endif %}
 
@@ -34,7 +34,7 @@
     <br/>
 
     
-    {% for batch_time,articles,error_count in articles_per_batch %}
+    {% for batch_time,articles,metainfos in articles_and_metainfos %}
 
         <div class="box">
             <span class="quiet">{{ batch_time }}</span><br/><br/>
@@ -53,9 +53,14 @@
                 Nothing new was found at that time.
             {% endif %}
             <br/><br/>
-            {% if error_count  %}
-                Downloading that batch yielded <a href="/source/{{ source_name }}/{{ current_date|date:'Y-m-d' }}/{{ batch_time }}/errors"><strong>{{ error_count }}</strong> error{{ error_count|pluralize }}.</a>
 
+            {% if metainfos.reprocessed_article_count  %}
+                <strong>{{ metainfos.reprocessed_article_count }}</strong> of these articles
+                were processed with the error handling script.
+            {% endif %}
+
+            {% if metainfos.error_count  %}
+                This batch has <a href="/source/{{ source_name }}/{{ current_date|date:'Y-m-d' }}/{{ batch_time }}/errors"><strong>{{ error_count }}</strong> pending error{{ error_count|pluralize }}.</a>
             {% endif %}
         </div>
 

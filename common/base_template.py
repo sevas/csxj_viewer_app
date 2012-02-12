@@ -6,21 +6,22 @@ import version
 
 
 def load_last_update_data(db_root):
-    last_update = csxjdb.get_statistics_from_last_update(db_root)
+    last_update = csxjdb.get_statistics_from_last_update_for_all_sources(db_root)
     return last_update
 
 
 def load_sidebar_data(db_root):
-    total_metainfo = csxjdb.get_summed_statistics(db_root)
+    total_metainfo = csxjdb.get_summed_statistics_for_all_sources(db_root)
 
     first_day, last_day = csxjdb.get_first_and_last_date(db_root)
 
     res = {}
     res.update(total_metainfo)
-    res.update(load_last_update_data(db_root))
     res.update({'start_date': first_day, 'end_date':last_day,
                 'num_providers':len(csxjdb.get_all_provider_names(db_root))})
+
     return res
+
 
 
 def load_queued_items_count(db_root):

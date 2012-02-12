@@ -16,7 +16,7 @@ STATIC_DATA_PATH = os.path.join(os.path.dirname(__file__), '../static_data')
 def index(request):
     t = loader.get_template('summary.html')
 
-    last_update = csxjdb.get_summary_from_last_update(STATIC_DATA_PATH)
+    last_update = csxjdb.get_summary_from_last_update_for_all_sources(STATIC_DATA_PATH)
 
     summary_per_source = list()
 

@@ -20,7 +20,7 @@ def index(request):
     overall_metainfo = {'article_count':0, 'error_count':0, 'link_count':0}
     for source_name in csxjdb.get_all_provider_names(STATIC_DATA_PATH):
         p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
-        source_metainfo = p.get_metainfo()
+        source_metainfo = p.get_cached_metainfos()
         metainfo_by_source[source_name] = source_metainfo
         for k in ['article_count', 'error_count', 'link_count']:
             overall_metainfo[k] = source_metainfo[k]
@@ -126,14 +126,29 @@ def show_source_day_summary(request, source_name, year, month, day):
             values = base_template.load_all_common_values(STATIC_DATA_PATH)
 
             prev_day, next_day = find_next_and_prev_days(date_string, available_days)
-            articles_and_errorcounts_per_batch = p.get_articles_and_errorcounts_per_batch(date_string)
+            articles_per_batch = p.get_articles_per_batch(date_string)
+
+            article_and_metainfos_per_batch = list()
+            for batch_time, articles in articles_per_batch:
+                reprocessed_articles = p.get_reprocessed_batch_articles(date_string, batch_time)
+                print reprocessed_articles
+                for (time, repr_articles) in reprocessed_articles:
+                    articles.extend(repr_articles)
+
+                packed_data = (
+                    batch_time, articles,
+                    p.get_batch_metainfos(date_string, batch_time)
+                    )
+                article_and_metainfos_per_batch.append(packed_data)
+
+            day_metainfos = p.get_cached_metainfos_for_day(date_string)
 
             values.update({'current_date':datetime(y, m, d),
                            'prev_day':prev_day,
                            'next_day':next_day,
-                           'articles_per_batch':articles_and_errorcounts_per_batch,
+                           'articles_and_metainfos':article_and_metainfos_per_batch,
                            'source_name':source_name,
-                           'error_count':sum([err for (day, art, err) in articles_and_errorcounts_per_batch])
+                           'error_count':day_metainfos['pending_error_count']
                           })
 
             c = Context(values)
@@ -152,11 +167,12 @@ def show_source_day_batch_articles(request, source_name, year, month, day, hours
     Shows a list of all articles downloaded that day, grouped by 'batch'
     """
     def get_values_for_batch_articles(provider, date_string, batch_hour_string):
-        articles, error_count = provider.get_batch_content(date_string, batch_hour_string)
+        articles = provider.get_batch_articles(date_string, batch_hour_string)
+        errors = provider.get_pending_batch_errors(date_string, batch_hour_string)
         enumerated_articles = enumerate(articles)
         return {'articles':enumerated_articles,
                 'source_name':source_name,
-                'error_count':error_count,
+                'error_count':len(errors),
                 'batch_url':"/source/{0}/{1}/{2}".format(source_name, date_string, batch_hour_string)}
 
     return render_batch_data(source_name, year, month, day, hours, minutes, seconds, 'source_batch.html', get_values_for_batch_articles)

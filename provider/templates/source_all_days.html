@@ -9,25 +9,28 @@
 
     <h1><strong>{{ source_name }}</strong></h1>
 
-    <h3>Here are a bunch of <a href='/source/{{ source_name }}/graphs'>scientific graphs</a> about this content provider.</h3>
+    <!--h3>Here are a bunch of <a href='/source/{{ source_name }}/graphs'>scientific graphs</a> about this content provider.</h3-->
 
     <h3>And below are all the dates for which we stored articles.</h3>
     <div class="box">
         <ul>
-        {% for day, article_count, error_count in all_days %}
-            {% if error_count  %}
-                <li> <a href='/source/{{ source_name }}/{{ day}}'>{{day}}:</a>
-                {{ article_count }} article{{ article_count|pluralize }} and <b>{{ error_count }}</b> error{{ error_count|pluralize }}
-                </li>
+        {% for day, metainfos in all_days %}
 
-            {% else %}
-                <li> <a href='/source/{{ source_name }}/{{ day}}'>{{day}}: </a>
-                    {{ article_count }} article{{ article_count|pluralize }}
-                </li>
+            <li> <a href='/source/{{ source_name }}/{{ day}}'>{{day}}:</a>
+
+                <strong>{{ metainfos.article_count }}</strong> article{{ metainfos.article_count|pluralize }}
 
 
+                {% if metainfos.reprocessed_article_count %}
+                    ,<strong>{{ metainfos.reprocessed_article_count }}</strong> reprocessed article{{ metainfos.reprocessed_article_count|pluralize }}
+                {% endif %}
 
-            {% endif %}
+
+                {% if metainfos.pending_error_count  %}
+                     and <strong>{{ metainfos.pending_error_count }}</strong> pending error{{ metainfos.pending_error_count|pluralize }}
+                {% endif%}
+            </li>
+
         {% endfor %}
         </ul>
     </div>
