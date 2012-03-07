@@ -17,9 +17,9 @@
 
 
             <br/>
-            {% if metainfo.error_count %}
+            {% if metainfo.total_error_count %}
                 <span> It also generated
-                <strong>{{ metainfo.error_count }}</strong> error{{  metainfo.error_count|pluralize }}.
+                <strong>{{ metainfo.total_error_count }}</strong> error{{  metainfo.total_error_count|pluralize }}.
                 </span>
             {% else %}
                 <span class="quiet">

@@ -35,11 +35,11 @@
             <h3><strong>Status</strong></h3>
             <div class="box">
                 <p>During the last update,
-                    <strong>{{ last_update_article_count }}</strong> article{{ last_update_article_count|pluralize }}
+                    <strong>{{ last_update.article_count }}</strong> article{{ last_update.article_count|pluralize }}
                     from <strong>{{ num_providers }}</strong> source{{ num_providers|pluralize }} were fetched.
                     <br/><br/>
-                    {% if last_update_error_count %}
-                        {{ last_update_error_count}} error{{ last_update_error_count|pluralize }} occurred. And that is terrible.
+                    {% if last_update.total_error_count %}
+                        <strong>{{ last_update.total_error_count}}</strong> error{{ last_update.total_error_count|pluralize }} occurred. And that is terrible.
                     {% else %}
                         No error occurred.
                     {% endif%}

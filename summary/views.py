@@ -24,10 +24,11 @@ def index(request):
         url = "/source/{0}/{1}".format(name, csxjdb.utils.convert_date_to_string(date))
         summary_per_source.append((name, date, metainfo, url))
 
+
     template_values = {'summary_per_source':summary_per_source}
-    template_values.update(base_template.load_sidebar_data(STATIC_DATA_PATH))
-    template_values.update(base_template.load_footer_data())
-    template_values.update(base_template.load_queued_items_count(STATIC_DATA_PATH))
+
+    template_values.update(base_template.load_all_common_values(STATIC_DATA_PATH))
+
     c = Context(template_values)
 
     return HttpResponse(t.render(c))

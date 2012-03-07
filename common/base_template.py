@@ -16,9 +16,14 @@ def load_sidebar_data(db_root):
     first_day, last_day = csxjdb.get_first_and_last_date(db_root)
 
     res = {}
+
+    res.update({
+        'start_date': first_day,
+        'end_date':last_day,
+        'num_providers':len(csxjdb.get_all_provider_names(db_root)),
+    })
+
     res.update(total_metainfo)
-    res.update({'start_date': first_day, 'end_date':last_day,
-                'num_providers':len(csxjdb.get_all_provider_names(db_root))})
 
     return res
 
@@ -44,4 +49,5 @@ def load_all_common_values(db_root):
     values.update(load_sidebar_data(db_root))
     values.update(load_footer_data())
     values.update(load_queued_items_count(db_root))
+    values['last_update'] = load_last_update_data(db_root)
     return values
