@@ -250,6 +250,10 @@ def show_download_queue(request, source_name):
 
         p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
         download_queue = p.get_queued_batches_by_day()
+
+        #we want latest items first
+        download_queue.reverse()
+
         values.update({'queued_items_by_day':download_queue,
                        'source_name':source_name})
         c = Context(values)

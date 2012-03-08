@@ -6,34 +6,58 @@
 
 
 
+
+{% block jquerysetup %}
+
+    <script type="text/javascript">
+
+//    $(function(){
+//
+//        $("#accordion").accordion({ header: "h3" });
+//    });
+
+    </script>
+
+{% endblock %}
+
+
+
+
 {% block content %}
     <div id="span-15">
     {% if queued_items_by_day %}
+    
         <h3>Here are the <strong>{{ source_name }}</strong> items set to be downloaded around midnight.</h3>
-        {% for day, batches in queued_items_by_day %}
+        <div id="accordion">
+            
+            {% for day, batches in queued_items_by_day %}
+            
+               <h3>{{ day }}</h3>
 
-            <h4>{{ day }}</h4>
-
-            {% if batches %}
-
-                {% for batch_hour, items in  batches %}
-                    <div class="box">
-                        {{ batch_hour }}: <strong>{{ items.articles|length }}</strong> article{{ items.articles|pluralize}} queued
-                        <ul>
-                        {% for title, url in items.articles %}
-                            <li><a href="{{ url }}">{{ title }}</a></li>
+                <div style="height: 300px; overflow-y: scroll; border: 1px solid;
+                            border-radius: 2px;  border-color: #ccc;
+                            padding: 16px">
+                    {% if batches %}
+                        {% for batch_hour, items in  batches %}
+                        <div class="box">
+                            {{ batch_hour }}: <strong>{{ items.articles|length }}</strong> article{{ items.articles|pluralize}} queued
+                            <ul>
+                            {% for title, url in items.articles %}
+                                <li><a href="{{ url }}">{{ title }}</a></li>
+                            {% endfor %}
+                            </ul>
+                        </div>
                         {% endfor %}
-                        </ul>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="box">
-                    This day has no batch enqueued. Something went wrong in the queue management system.
-                </div>
-            {% endif %}
-        <br/><br/><br/>
-        {% endfor %}
+                    {% else %}
+                        <div class="box">
+                            This day has no batch enqueued. Something went wrong in the queue management system.
+                        </div>
+                    {% endif %}
 
+                </div>
+                <br/><br/><br/>
+            {% endfor %}
+        </div>
     {% else %}
         <h3>There are no items in the queue.</h3>
     {% endif %}
