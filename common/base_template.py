@@ -37,7 +37,6 @@ def load_queued_items_count(db_root):
         p = csxjdb.Provider(db_root, source_name)
         item_count = p.get_queued_items_count()
         if item_count:
-            print "items in ", source_name
             queued_items_count += item_count
             provider_count += 1
 
