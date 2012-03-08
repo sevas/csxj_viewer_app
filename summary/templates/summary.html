@@ -10,8 +10,9 @@
         <h1><strong><a href='/source/{{ name}}'>{{ name }}</a></strong></h1>
         <div class="box" style="text-align:center;">
 
-            <strong>{{ metainfo.article_count}}</strong> article{{  metainfo.article_count|pluralize }}
-            were downloaded last night. It fetched articles for <a href="{{ url }}">{{ date|date:'F d, Y' }}</a>.
+            The last download session occured on <a href="{{ url }}">{{ date|date:'F d, Y' }}</a>.
+            It fetched <strong>{{ metainfo.article_count}}</strong> article{{  metainfo.article_count|pluralize }}.
+
             <br/>
 
 
