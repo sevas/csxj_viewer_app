@@ -12,6 +12,12 @@
       type="image/png"
       href="/static/icons/collaboration.png" />
 
+    <link type="text/css" href="/static/css/ui-lightness/jquery-ui-1.8.18.custom.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
+
+   {% block jquerysetup %}{% endblock %}
+
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
@@ -36,7 +42,7 @@
             <div class="box">
                 <p>During the last update,
                     <strong>{{ last_update.article_count }}</strong> article{{ last_update.article_count|pluralize }}
-                    from <strong>{{ num_providers }}</strong> source{{ num_providers|pluralize }} were fetched.
+                    from <strong>{{ last_update.provider_count }}</strong> source{{ last_update.provider_count|pluralize }} were fetched.
                     <br/><br/>
                     {% if last_update.total_error_count %}
                         <strong>{{ last_update.total_error_count}}</strong> error{{ last_update.total_error_count|pluralize }} occurred. And that is terrible.
@@ -46,7 +52,8 @@
                 </p>
 
                 <p>
-                    There are <strong>{{ queued_items_count }}</strong> item{{ queued_items_count|pluralize }} in the download queue.
+                    Overall, there are <strong>{{ queue.item_count }}</strong> item{{ queued.items_count|pluralize }}
+                    in the <strong>{{ queue.provider_count }}</strong> download queue{{ queue.provider_count|pluralize }}.
                 </p>
             </div>
 

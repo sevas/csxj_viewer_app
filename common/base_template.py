@@ -32,11 +32,19 @@ def load_sidebar_data(db_root):
 def load_queued_items_count(db_root):
     sources = csxjdb.get_all_provider_names(db_root)
     queued_items_count = 0
+    provider_count = 0
     for source_name in sources:
         p = csxjdb.Provider(db_root, source_name)
-        queued_items_count += p.get_queued_items_count()
+        item_count = p.get_queued_items_count()
+        if item_count:
+            print "items in ", source_name
+            queued_items_count += item_count
+            provider_count += 1
 
-    return {'queued_items_count':queued_items_count}
+    return {
+        'item_count':queued_items_count,
+        'provider_count':provider_count
+    }
 
 
 def load_footer_data():
@@ -48,6 +56,7 @@ def load_all_common_values(db_root):
     values = dict()
     values.update(load_sidebar_data(db_root))
     values.update(load_footer_data())
-    values.update(load_queued_items_count(db_root))
+
+    values['queue'] = load_queued_items_count(db_root)
     values['last_update'] = load_last_update_data(db_root)
     return values
