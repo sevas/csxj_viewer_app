@@ -12,9 +12,8 @@ STATIC_DATA_PATH = os.path.join(os.path.dirname(__file__), '../static_data')
 
 def index(request):
     t = loader.get_template('source_list.html')
-    d = {}
-    sidebar_data =  base_template.load_sidebar_data(STATIC_DATA_PATH)
-    d.update(sidebar_data)
+    d = base_template.load_all_common_values(STATIC_DATA_PATH)
+
 
     metainfo_by_source = dict()
     overall_metainfo = {'article_count':0, 'error_count':0, 'link_count':0}
