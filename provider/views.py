@@ -10,18 +10,33 @@ from common import base_template
 
 STATIC_DATA_PATH = os.path.join(os.path.dirname(__file__), '../static_data')
 
+
+
+#metainfos = {
+#    'article_count':article_count,
+#    'link_count':link_count,
+#    'pending_error_count':pending_error_count,
+#    'total_error_count':total_error_count,
+#    'reprocessed_article_count':reprocessed_article_count,
+#    'reprocessed_link_count':reprocessed_link_count
+#}
+
 def index(request):
     t = loader.get_template('source_list.html')
     d = base_template.load_all_common_values(STATIC_DATA_PATH)
 
 
     metainfo_by_source = dict()
-    overall_metainfo = {'article_count':0, 'error_count':0, 'link_count':0}
+    overall_metainfo = {'article_count':0,
+                        'pending_error_count':0,
+                        'total_error_count':0,
+                        'link_count':0}
+
     for source_name in csxjdb.get_all_provider_names(STATIC_DATA_PATH):
         p = csxjdb.Provider(STATIC_DATA_PATH, source_name)
         source_metainfo = p.get_cached_metainfos()
         metainfo_by_source[source_name] = source_metainfo
-        for k in ['article_count', 'error_count', 'link_count']:
+        for k in ['article_count', 'pending_error_count', 'total_error_count', 'link_count']:
             overall_metainfo[k] = source_metainfo[k]
 
     d.update(overall_metainfo)
@@ -38,6 +53,8 @@ def index(request):
     d.update({'sources_data':sources_data})
     d.update(base_template.load_footer_data())
     d.update({'queued_items_count':total_queued_items_count})
+
+    print d
 
     c = Context(d)
 
@@ -133,9 +150,11 @@ def show_source_day_summary(request, source_name, year, month, day):
                 for (time, repr_articles) in reprocessed_articles:
                     articles.extend(repr_articles)
 
+
+                batch_metainfos = p.get_batch_metainfos(date_string, batch_time)
                 packed_data = (
                     batch_time, articles,
-                    p.get_batch_metainfos(date_string, batch_time)
+                    batch_metainfos
                     )
                 article_and_metainfos_per_batch.append(packed_data)
 
@@ -170,7 +189,7 @@ def show_source_day_batch_articles(request, source_name, year, month, day, hours
         enumerated_articles = enumerate(articles)
         return {'articles':enumerated_articles,
                 'source_name':source_name,
-                'error_count':len(errors),
+                'error_count':len(errors[0]) + len(errors[1]),
                 'batch_url':"/source/{0}/{1}/{2}".format(source_name, date_string, batch_hour_string)}
 
     return render_batch_data(source_name, year, month, day, hours, minutes, seconds, 'source_batch.html', get_values_for_batch_articles)
@@ -183,8 +202,12 @@ def show_source_day_batch_errors(request, source_name, year, month, day, hours, 
 
     """
     def get_values_for_batch_errors(provider, date_string, batch_hour_string):
-        errors = provider.get_errors_from_batch(date_string, batch_hour_string)
-        return {'errors':errors,
+        errors1, errors2 = provider.get_pending_batch_errors(date_string, batch_hour_string)
+
+        #flatten list
+        all_errors = errors1
+        all_errors.extend(errors2)
+        return {'errors':all_errors,
                 'source_name':source_name,
                 'batch_url':"/source/{0}/{1}/{2}".format(source_name, date_string, batch_hour_string)}
 

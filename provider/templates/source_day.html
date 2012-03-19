@@ -34,7 +34,7 @@
     <br/>
 
     
-    {% for batch_time,articles,metainfos in articles_and_metainfos %}
+    {% for batch_time,articles,batch_metainfos in articles_and_metainfos %}
 
         <div class="box">
             <span class="quiet">{{ batch_time }}</span><br/><br/>
@@ -54,13 +54,14 @@
             {% endif %}
             <br/><br/>
 
-            {% if metainfos.reprocessed_article_count  %}
-                <strong>{{ metainfos.reprocessed_article_count }}</strong> of these articles
+            {% if batch_metainfos.reprocessed_article_count  %}
+                <strong>{{ batch_metainfos.reprocessed_article_count }}</strong> of these articles
                 were processed with the error handling script.
             {% endif %}
 
-            {% if metainfos.error_count  %}
-                This batch has <a href="/source/{{ source_name }}/{{ current_date|date:'Y-m-d' }}/{{ batch_time }}/errors"><strong>{{ error_count }}</strong> pending error{{ error_count|pluralize }}.</a>
+            {% if batch_metainfos.pending_error_count  %}
+                This batch has <a href="/source/{{ source_name }}/{{ current_date|date:'Y-m-d' }}/{{ batch_time }}/errors">
+                <strong>{{ batch_metainfos.pending_error_count}}</strong> pending error{{ batch_metainfos.pending_error_count|pluralize }}.</a>
             {% endif %}
         </div>
 

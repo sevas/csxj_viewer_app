@@ -24,13 +24,32 @@
              {% endwith %}
 
             <br/>
-            {% with total_errors=source_stats.error_count %}
+
+
+
+            {% with source_stats.pending_error_count  as pending_error_count  %}
+                {% if  pending_error_count%}
+                    <span>
+                        There are still <strong>{{ pending_error_count}} </strong> pending
+                        error{{ pending_error_count|pluralize  }} to process.
+                    </span>
+                {% else %}
+                    <span class="quiet">
+                        There are no pending errors
+                   </span>
+                {% endif %}
+
+            {% endwith %}
+
+            <br/>
+
+            {% with total_errors=source_stats.total_error_count %}
                 {% if total_errors %}
+                    <span class="quiet"> It also generated a total of
+                    <strong>{{ total_errors }}</strong> error{{  total_errors|pluralize }}.
+                    </span>
+                    <br/>
 
-
-                <span class="quiet"> It also generated
-                <strong>{{ total_errors }}</strong> error{{  total_errors|pluralize }}.
-                </span>
                 {% else %}
                     <span class="quiet">
                         And no error occurred here.
