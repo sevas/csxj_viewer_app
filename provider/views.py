@@ -54,8 +54,6 @@ def index(request):
     d.update(base_template.load_footer_data())
     d.update({'queued_items_count':total_queued_items_count})
 
-    print d
-
     c = Context(d)
 
     return HttpResponse(t.render(c))
