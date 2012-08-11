@@ -55,6 +55,21 @@
                     Overall, there are <strong>{{ queue.item_count }}</strong> item{{ queued.items_count|pluralize }}
                     in the <strong>{{ queue.provider_count }}</strong> download queue{{ queue.provider_count|pluralize }}.
                 </p>
+            
+                <p>
+
+                    {% for name, error_count in queue_errors %}
+                    
+                        <img src="/static/icons/exclamation.png" alt="oh noes">
+                            There is an issue with the <a href="/source/{{ name }}/queue">{{ name }} queue.</a>
+                        <br/>
+
+                        
+                    {% endfor %}
+
+                    
+                </p>
+            
             </div>
 
             <h3><strong>Overall statistics</strong></h3>

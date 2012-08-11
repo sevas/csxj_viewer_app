@@ -25,6 +25,9 @@ def load_sidebar_data(db_root):
 
     res.update(total_metainfo)
 
+    all_errors_per_source = csxjdb.get_queue_error_count_for_all_sources(db_root)
+    res['queue_errors'] = all_errors_per_source
+
     return res
 
 
@@ -48,6 +51,12 @@ def load_queued_items_count(db_root):
 
 def load_footer_data():
     return dict(version=version.VERSION, csxj_version=csxj.__version__)
+
+
+
+
+
+
 
 
 
