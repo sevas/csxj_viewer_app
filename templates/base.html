@@ -59,10 +59,11 @@
                 <p>
 
                     {% for name, error_count in queue_errors %}
-                    
+                        <div class="error">
                         <img src="/static/icons/exclamation.png" alt="oh noes">
                             There is an issue with the <a href="/source/{{ name }}/queue">{{ name }} queue.</a>
                         <br/>
+                        </div>
 
                         
                     {% endfor %}
