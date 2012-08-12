@@ -9,15 +9,6 @@
 
 {% block jquerysetup %}
 
-    <script type="text/javascript">
-
-//    $(function(){
-//
-//        $("#accordion").accordion({ header: "h3" });
-//    });
-
-    </script>
-
 {% endblock %}
 
 
@@ -28,8 +19,50 @@
     {% if queued_items_by_day %}
     
         <h3>Here are the <strong>{{ source_name }}</strong> items set to be downloaded around midnight.</h3>
-        <div id="accordion">
-            
+
+        {% if errors %}
+            <br/>
+
+            <div class="error">
+            <h3 >Hold on. There is a problem with the queue management. We need to fix this!</h3>
+            </div>
+            <h4>Here are the collected stacktraces:</h4>
+
+            <div>
+                {% for day, logged_stacktraces in errors.items %}
+                    <h3>{{ day }}</h3>
+
+                    <div style="height: 300px; overflow-y: scroll; border: 1px solid;
+                                               border-radius: 2px;  border-color: #ccc;
+                                               padding: 16px">
+
+                   {% for batch_hour, stacktrace in  logged_stacktraces.items %}
+                   <div class="box">
+                       {{ batch_hour }}:<br>
+
+                       <code>
+                          {{ stacktrace|linebreaksbr }}
+                       </code>
+
+                   </div>
+                   {% endfor %}
+
+
+                   </div>
+
+                {% endfor %}
+
+
+            </div>
+
+
+        {% endif %}
+
+        <br/><br/><br/>
+
+        <H4>And this is the rest of the queue:</H4>
+
+        <div >
             {% for day, batches in queued_items_by_day %}
             
                <h3>{{ day }}</h3>

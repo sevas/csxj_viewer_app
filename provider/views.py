@@ -273,9 +273,11 @@ def show_download_queue(request, source_name):
 
         #we want latest items first
         download_queue.reverse()
-
+        errors = p.get_queue_errors()
+        print errors
         values.update({'queued_items_by_day':download_queue,
-                       'source_name':source_name})
+                       'source_name':source_name,
+                       'errors':errors})
         c = Context(values)
         t = loader.get_template('download_queue.html')
         return HttpResponse(t.render(c))
