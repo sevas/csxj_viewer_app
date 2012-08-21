@@ -1,4 +1,5 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
+from feeds.queueerrorsfeed import LatestEntriesFeed
 
 # Uncomment the next two lines to enable the admin:
 #from django.contrib import admin
@@ -7,6 +8,8 @@ from django.conf.urls.defaults import patterns, include, url
 urlpatterns = patterns('',
 
     url(r'^source/', include('provider.urls')),
+    url(r'^feed/queueerrors/$', LatestEntriesFeed),
     url(r'^$', 'summary.views.index'),
+
 )
 
