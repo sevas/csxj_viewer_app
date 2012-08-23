@@ -49,7 +49,7 @@ class LatestEntriesFeed(Feed):
 
 
     def item_link(self, item):
-        return "/source/{0}/queue".format(item[2])
+        return "{0}/source/{1}/queue".format(self.link, item[2])
 
 
 
