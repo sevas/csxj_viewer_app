@@ -33,7 +33,7 @@ def flatten_error_dict(all_errors):
 
 class LatestEntriesFeed(Feed):
     title = "csxj crawler queue errors feed"
-    link = "/queue_errors_feed"
+    link = "http://tartiflette.ulb.ac.be:8081"
     description = ""
 
     def items(self):
