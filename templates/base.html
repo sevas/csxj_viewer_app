@@ -8,6 +8,10 @@
     <link type="text/css" rel="stylesheet" href="/static/stylesheets/blueprint-restyled/plugins/buttons/screen.css" media="screen, projection"/>
     <link type="text/css" rel="stylesheet" href="/static/stylesheets/blueprint-restyled/print.css"  media="print"/>
 
+    <link rel="alternate" type="application/rss+xml" title="CSxJ Queue Errors Feed" href="/feed/queueerrors" />
+
+
+
     <link rel="icon"
       type="image/png"
       href="/static/icons/collaboration.png" />
@@ -57,20 +61,26 @@
                 </p>
             
                 <p>
-
                     {% for name, error_count in queue_errors %}
                         <div class="error">
-                        <img src="/static/icons/exclamation.png" alt="oh noes">
+                        <img src="/static/icons/exclamation.png" alt="oh noes" />
                             There is an issue with the <a href="/source/{{ name }}/queue">{{ name }} queue.</a>
                         <br/>
                         </div>
-
-                        
                     {% endfor %}
-
-                    
                 </p>
-            
+
+                <br/><br/>
+
+                <table>
+                    <tr>
+                        <td style="width: 16px;"><img src="/static/icons/feed.png" alt="steampunk tech" /></td>
+                        <td style="text-align: left;"><a href="/feed/queueerrors">Queue errors RSS feed </a></td>
+                    </tr>
+                </table>
+
+
+
             </div>
 
             <h3><strong>Overall statistics</strong></h3>

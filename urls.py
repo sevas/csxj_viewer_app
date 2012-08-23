@@ -8,7 +8,7 @@ from feeds.queueerrorsfeed import LatestEntriesFeed
 urlpatterns = patterns('',
 
     url(r'^source/', include('provider.urls')),
-    url(r'^feed/queueerrors/$', LatestEntriesFeed),
+    url(r'^feed/queueerrors', LatestEntriesFeed()),
     url(r'^$', 'summary.views.index'),
 
 )

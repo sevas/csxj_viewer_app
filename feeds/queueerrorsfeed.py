@@ -41,7 +41,7 @@ class LatestEntriesFeed(Feed):
 
 
     def item_title(self, item):
-        return "[On {0} at {1}] New queue error for {2}".format(item)
+        return "[On {0} at {1}] New queue error for {2}".format(*item)
 
 
     def item_description(self, item):
@@ -53,13 +53,3 @@ class LatestEntriesFeed(Feed):
 
 
 
-
-#if __name__=="__main__":
-#    from pprint import pprint
-#    all_errors = csxjdb.get_queue_errors_for_all_sources(STATIC_DATA_PATH)
-#
-##    pprint(all_errors)
-#
-#
-#    for err in flatten_error_dict(all_errors):
-#        print "\t", err
