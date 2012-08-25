@@ -69,13 +69,13 @@
 
                 {% endif %}
                 <br/><br/>
-                {% if article.external_links %}
-                    {% with num_links=article.external_links|length %}
+                {% if article.other_links %}
+                    {% with num_links=article.other_links|length %}
                      This story has <strong>{{ num_links }}</strong> external link{{ num_links|pluralize }}.
                     {% endwith %}
 
                     <br/>
-                    {% for link in article.external_links %}
+                    {% for link in article.other_links %}
                         <div>
                             <a href='{{link.0}}'> {{  link.1 }}</a>
                             {% for tag in link.2 %}
