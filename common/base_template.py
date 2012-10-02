@@ -25,7 +25,7 @@ def load_sidebar_data(db_root):
 
     res.update(total_metainfo)
 
-    all_errors_per_source = csxjdb.get_queue_error_count_for_all_sources(db_root)
+    all_errors_per_source = csxjdb.get_queue_error_count_for_all_sources(db_root, 5)
     res['queue_errors'] = all_errors_per_source
 
     return res
